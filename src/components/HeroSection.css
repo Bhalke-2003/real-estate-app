@@ -1,4 +1,4 @@
-/* Hero background with zoom effect */
+
 .hero-section {
   position: relative;
   height: 50vh;
@@ -27,10 +27,10 @@
   position: relative;
   z-index: 2;
   max-width: 900px;
-  margin: -100px auto 0; /* Pull it upward */
+  margin: -100px auto 0; 
 }
 
-/* Responsive form layout */
+
 .hero-search-box .form-control,
 .hero-search-box .form-select {
   min-width: 180px;

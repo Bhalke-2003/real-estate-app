@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import bgImage from '../assctes/background.jpg';
+import bgImage from '../assets/background1.jpg';
 import './HeroSection.css';
 
 const Hero = () => {
