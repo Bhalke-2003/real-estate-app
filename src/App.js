@@ -5,7 +5,7 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 
 import BuilderInfo from './pages/BuilderInfo';
-import LoginSignup from './pages/LoginSignup';
+import LoginModal from './components/LoginModal';
 import SearchResults from './pages/SearchResults';
 import PostProperty from './pages/PostProperty';
 
@@ -19,9 +19,10 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="loginmodal" element={<LoginModal/>}/>
       
         <Route path="/builder" element={<BuilderInfo />} />
-        <Route path="/login" element={<LoginSignup />} />
+       
         <Route path="/search" element={<SearchResults />} />
         <Route path="/postproperty" element={<PostProperty />} />
 

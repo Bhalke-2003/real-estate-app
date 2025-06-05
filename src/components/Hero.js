@@ -135,7 +135,7 @@ const Hero = () => {
             <option value="Independent House">Independent House</option>
             <option value="Commercial">Commercial</option>
           </select>
-          <button className="btn btn-primary" onClick={handleSearch}>
+          <button className="search-btn" onClick={handleSearch}>
             Search
           </button>
         </div>

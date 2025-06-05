@@ -29,6 +29,15 @@
   max-width: 900px;
   margin: -100px auto 0; 
 }
+.search-btn{
+  background-color: #0d1b2a;
+  border-color: 184488;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: 6px;
+  color: white;
+  transition: background-color 0.3s ease;
+}
 
 
 .hero-search-box .form-control,
