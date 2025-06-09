@@ -1,9 +1,13 @@
 import React from 'react';
+import './BuilderBanner.css';
+import { FaTools } from 'react-icons/fa'; // FontAwesome tools icon
 
 function BuilderBanner() {
   return (
-    <div className="bg-dark text-white text-center py-4 mg-3 mt-5">
-      <h4>🏗️ 120+ Builders Connected with Us</h4>
+    <div className="builder-banner-wrapper">
+      <div className="scrolling-text">
+        <FaTools className="icon" /> 120+ Trusted Builders Partnered with DAG
+      </div>
     </div>
   );
 }

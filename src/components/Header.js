@@ -1,13 +1,12 @@
-import React, { useState } from 'react'; // ✅ you forgot to import useState
+import React, { useState } from 'react'; 
 import { Link, useNavigate } from 'react-router-dom';
 import { FaCaretDown } from 'react-icons/fa';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import './Header.css';
-import LoginModal from './LoginModal'; // ✅ Import your modal component
-
+import LoginModal from './LoginModal'; 
 const Header = () => {
   const navigate = useNavigate();
-  const [showLoginModal, setShowLoginModal] = useState(false); // ✅ Correct variable
+  const [showLoginModal, setShowLoginModal] = useState(false); 
 
   const handlePostProperty = (type) => {
     navigate(`/postproperty?propertyType=${encodeURIComponent(type)}`);

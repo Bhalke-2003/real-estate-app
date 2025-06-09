@@ -19,11 +19,9 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="loginmodal" element={<LoginModal/>}/>
-      
+        <Route path="loginmodal" element={<LoginModal/>}/>    
         <Route path="/builder" element={<BuilderInfo />} />
-       
-        <Route path="/search" element={<SearchResults />} />
+         <Route path="/search" element={<SearchResults />} />
         <Route path="/postproperty" element={<PostProperty />} />
 
       </Routes>
