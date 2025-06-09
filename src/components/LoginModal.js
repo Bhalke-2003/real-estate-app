@@ -1,15 +1,18 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import bgImage from '../assets/background1.jpg';
+import bgImage from '../assets/house.jpg';
 import { FaMicrophone, FaSearch } from 'react-icons/fa';
 import './HeroSection.css';
+
 const locationsList = ['Pune', 'Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai', 'Nagpur', 'Kolkata', 'Ahmedabad'];
+
 const Hero = () => {
   const [location, setLocation] = useState('');
   const [type, setType] = useState('');
   const [filteredLocations, setFilteredLocations] = useState([]);
   const navigate = useNavigate();
-  const recognitionRef = useRef(null); 
+  const recognitionRef = useRef(null);
+
   const handleSearch = () => {
     const queryParams = new URLSearchParams();
     if (location) queryParams.append('location', location);
