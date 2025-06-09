@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
+import "./ForSale.css";
+
 
 const ForSaleHousesForm = () => {
   const [formData, setFormData] = useState({
@@ -22,398 +24,254 @@ const ForSaleHousesForm = () => {
     price: "",
     photos: [],
     state: "",
-    name: "Akashta Bhalke",
     mobile: "",
+    email: "",
   });
-
-  const [image, setImage] = useState(null);
-  const [photos, setPhotos] = useState([]);
-
-  // Handle form input changes
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "photos") {
-      setFormData((prev) => ({
-        ...prev,
-        photos: [...files],
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
-  };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   // You can add form validation & submission logic here
-  //   alert("Form submitted! Check console for data.");
-  //   console.log(formData);
-  // };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const data = new FormData();
+    const data = new FormData();
 
-  // Append all fields except photos
-  for (const key in formData) {
-    if (key !== "photos") {
-      data.append(key, formData[key]);
-      console.log(`${key}: ${formData[key]}`);
+    for (const key in formData) {
+      if (key !== "photos") {
+        data.append(key, formData[key]);
+      }
     }
-  }
 
-  // Append each photo file individually from formData.photos
-  formData.photos.forEach((file) => {
-    console.log("Appending photo file:", file.name);
-    data.append("photos", file);
-  });
+    formData.photos.forEach((file) => {
+      data.append("photos", file);
+    });
 
-  try {
-    const res = await axios.post("http://localhost:8080/api/properties/add", data);
-    console.log("Uploaded successfully:", res.data);
-  } catch (err) {
-    console.error("Error uploading property:", err.response?.data || err.message);
-  }
-};
+    // Save listing to localStorage
+    const listing = {
+      type: formData.type,
+      price: formData.price,
+      state: formData.state,
+      contact: formData.mobile,
+      email: formData.email,
+    };
 
+    const existingListings = JSON.parse(localStorage.getItem("saleListings")) || [];
+    existingListings.push(listing);
+    localStorage.setItem("saleListings", JSON.stringify(existingListings));
 
+    try {
+      const res = await axios.post("http://localhost:8080/api/properties/add", data);
+      console.log("Uploaded successfully:", res.data);
+      alert("Property submitted!");
+    } catch (err) {
+      console.error("Error uploading property:", err.response?.data || err.message);
+      alert("Failed to submit property");
+    }
 
-
-
+    setFormData({
+      type: "",
+      bhk: "",
+      bathrooms: "",
+      furnishing: "",
+      projectStatus: "",
+      listedBy: "",
+      superBuiltupArea: "",
+      carpetArea: "",
+      maintenance: "",
+      totalFloors: "",
+      floorNo: "",
+      carParking: "",
+      facing: "",
+      projectName: "",
+      adTitle: "",
+      description: "",
+      price: "",
+      photos: [],
+      state: "",
+      mobile: "",
+      email: "",
+    });
+  };
 
   return (
-    <div className="container my-3">
-      <h2 className="mb-3">Post Property - For Sale: Houses & Apartments</h2>
-      <form onSubmit={handleSubmit} className="border p-4 rounded shadow-sm bg-white">
+    <form onSubmit={handleSubmit} style={{ maxWidth: 600, margin: "auto" }}>
+      <input
+        type="text"
+        placeholder="Name"
+        value={formData.type}
+        onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+        required
+      />
 
-        {/* Property Type */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">Type *</label>
-          <select
-            className="form-select"
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select Type</option>
-            <option value="Flats / Apartments">Flats / Apartments</option>
-            <option value="Independent / Builder Floors">Independent / Builder Floors</option>
-            <option value="Farm House">Farm House</option>
-            <option value="House & Villa">House & Villa</option>
-          </select>
-        </div>
+      <input
+        type="number"
+        placeholder="BHK"
+        value={formData.bhk}
+        onChange={(e) => setFormData({ ...formData, bhk: e.target.value })}
+        required
+      />
 
-        {/* BHK */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">BHK</label>
-          <select
-            className="form-select"
-            name="bhk"
-            value={formData.bhk}
-            onChange={handleChange}
-          >
-            <option value="">Select BHK</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="4+">4+</option>
-          </select>
-        </div>
+      <input
+        type="number"
+        placeholder="Bathrooms"
+        value={formData.bathrooms}
+        onChange={(e) => setFormData({ ...formData, bathrooms: e.target.value })}
+        required
+      />
 
-        {/* Bathrooms */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">Bathrooms</label>
-          <select
-            className="form-select"
-            name="bathrooms"
-            value={formData.bathrooms}
-            onChange={handleChange}
-          >
-            <option value="">Select Bathrooms</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="4+">4+</option>
-          </select>
-        </div>
+      <select
+        value={formData.furnishing}
+        onChange={(e) => setFormData({ ...formData, furnishing: e.target.value })}
+        required
+      >
+        <option value="">Select Furnishing</option>
+        <option value="Furnished">Furnished</option>
+        <option value="Semi-Furnished">Semi-Furnished</option>
+        <option value="Unfurnished">Unfurnished</option>
+      </select>
 
-        {/* Furnishing */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">Furnishing</label>
-          <select
-            className="form-select"
-            name="furnishing"
-            value={formData.furnishing}
-            onChange={handleChange}
-          >
-            <option value="">Select Furnishing</option>
-            <option value="Furnished">Furnished</option>
-            <option value="Semi-Furnished">Semi-Furnished</option>
-            <option value="Unfurnished">Unfurnished</option>
-          </select>
-        </div>
+      <select
+        value={formData.projectStatus}
+        onChange={(e) => setFormData({ ...formData, projectStatus: e.target.value })}
+        required
+      >
+        <option value="">Select Project Status</option>
+        <option value="Ready to Move">Ready to Move</option>
+        <option value="Under Construction">Under Construction</option>
+      </select>
 
-        {/* Project Status */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">Project Status</label>
-          <select
-            className="form-select"
-            name="projectStatus"
-            value={formData.projectStatus}
-            onChange={handleChange}
-          >
-            <option value="">Select Project Status</option>
-            <option value="New Launch">New Launch</option>
-            <option value="Ready to Move">Ready to Move</option>
-            <option value="Under Construction">Under Construction</option>
-          </select>
-        </div>
+      <select
+      value={formData.listedBy}
+      onChange={(e) => setFormData({ ...formData, listedBy: e.target.value })}
+      required
+      >
+        <option value="">Listed By</option>
+        <option value="Owner">Owner</option>
+        <option value="Builder">Builder</option>
+        <option value="Dealer">Dealer</option>
+      </select>
 
-        {/* Listed by */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">Listed By</label>
-          <select
-            className="form-select"
-            name="listedBy"
-            value={formData.listedBy}
-            onChange={handleChange}
-          >
-            <option value="">Select Option</option>
-            <option value="Builder">Builder</option>
-            <option value="Dealer">Dealer</option>
-            <option value="Owner">Owner</option>
-          </select>
-        </div>
 
-        {/* Areas and Maintenance */}
-        <div className="row">
-          <div className="col-md-4 mb-3">
-            <label className="form-label fw-bold">Super Builtup Area (sqft) *</label>
-            <input
-              type="number"
-              className="form-control"
-              name="superBuiltupArea"
-              value={formData.superBuiltupArea}
-              onChange={handleChange}
-              required
-              min="0"
-            />
-          </div>
-          <div className="col-md-4 mb-3">
-            <label className="form-label fw-bold">Carpet Area (sqft)</label>
-            <input
-              type="number"
-              className="form-control"
-              name="carpetArea"
-              value={formData.carpetArea}
-              onChange={handleChange}
-              min="0"
-            />
-          </div>
-          <div className="col-md-4 mb-3">
-            <label className="form-label fw-bold">Maintenance (Monthly)</label>
-            <input
-              type="number"
-              className="form-control"
-              name="maintenance"
-              value={formData.maintenance}
-              onChange={handleChange}
-              min="0"
-            />
-          </div>
-        </div>
+      <input
+        type="number"
+        placeholder="Super Built-up Area (sq.ft)"
+        value={formData.superBuiltupArea}
+        onChange={(e) => setFormData({ ...formData, superBuiltupArea: e.target.value })}
+        required
+      />
 
-        {/* Floors */}
-        <div className="row">
-          <div className="col-md-6 mb-3">
-            <label className="form-label fw-bold">Total Floors</label>
-            <input
-              type="number"
-              className="form-control"
-              name="totalFloors"
-              value={formData.totalFloors}
-              onChange={handleChange}
-              min="0"
-            />
-          </div>
-          <div className="col-md-6 mb-3">
-            <label className="form-label fw-bold">Floor No</label>
-            <input
-              type="number"
-              className="form-control"
-              name="floorNo"
-              value={formData.floorNo}
-              onChange={handleChange}
-              min="0"
-            />
-          </div>
-        </div>
+      <input
+        type="number"
+        placeholder="Carpet Area (sq.ft)"
+        value={formData.carpetArea}
+        onChange={(e) => setFormData({ ...formData, carpetArea: e.target.value })}
+        required
+      />
 
-        {/* Car Parking */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">Car Parking</label>
-          <select
-            className="form-select"
-            name="carParking"
-            value={formData.carParking}
-            onChange={handleChange}
-          >
-            <option value="">Select Parking</option>
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="3+">3+</option>
-          </select>
-        </div>
+      <input
+        type="number"
+        placeholder="Maintenance (per month)"
+        value={formData.maintenance}
+        onChange={(e) => setFormData({ ...formData, maintenance: e.target.value })}
+      />
 
-        {/* Facing */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">Facing</label>
-          <input
-            type="text"
-            className="form-control"
-            name="facing"
-            value={formData.facing}
-            onChange={handleChange}
-            placeholder="e.g. East, West"
-          />
-        </div>
+      <input
+        type="number"
+        placeholder="Total Floors"
+        value={formData.totalFloors}
+        onChange={(e) => setFormData({ ...formData, totalFloors: e.target.value })}
+      />
 
-        {/* Project Name */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">
-            Project Name <small className="text-muted">(max 70 chars)</small>
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="projectName"
-            value={formData.projectName}
-            onChange={handleChange}
-            maxLength={70}
-          />
-        </div>
+      <input
+        type="number"
+        placeholder="Floor No"
+        value={formData.floorNo}
+        onChange={(e) => setFormData({ ...formData, floorNo: e.target.value })}
+      />
 
-        {/* Ad Title */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">
-            Ad title * <small className="text-muted">(max 70 chars)</small>
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="adTitle"
-            value={formData.adTitle}
-            onChange={handleChange}
-            maxLength={70}
-            required
-            placeholder="Mention key features e.g. brand, age, type"
-          />
-        </div>
+      <select
+        value={formData.carParking}
+        onChange={(e) => setFormData({ ...formData, carParking: e.target.value })}
+      >
+        <option value="">Car Parking</option>
+        <option value="Available">Available</option>
+        <option value="Not Available">Not Available</option>
+      </select>
 
-        {/* Description */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">
-            Description * <small className="text-muted">(max 4096 chars)</small>
-          </label>
-          <textarea
-            className="form-control"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            rows={5}
-            maxLength={4096}
-            required
-            placeholder="Include condition, features, reason for selling"
-          />
-        </div>
+      <select
+        value={formData.facing}
+        onChange={(e) => setFormData({ ...formData, facing: e.target.value })}
+      >
+        <option value="">Facing</option>
+        <option value="East">East</option>
+        <option value="West">West</option>
+        <option value="North">North</option>
+        <option value="South">South</option>
+      </select>
 
-        {/* Price */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">Price *</label>
-          <div className="input-group">
-            <span className="input-group-text">₹</span>
-            <input
-              type="number"
-              className="form-control"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              required
-              min="0"
-            />
-          </div>
-        </div>
+      <input
+        type="text"
+        placeholder="Project Name"
+        value={formData.projectName}
+        onChange={(e) => setFormData({ ...formData, projectName: e.target.value })}
+      />
 
-        {/* Upload Photos */}
-        <div className="mb-4">
-          <label className="form-label fw-bold">Upload up to 20 photos</label>
-          <input
-            type="file"
-            name="photos"
-            multiple
-            accept="image/*"
-            className="form-control"
-            onChange={handleChange}
-          />
-          <small className="text-muted">Max 20 photos, each up to 5MB</small>
-        </div>
+      <input
+        type="text"
+        placeholder="Ad Title"
+        value={formData.adTitle}
+        onChange={(e) => setFormData({ ...formData, adTitle: e.target.value })}
+        required
+      />
 
-        {/* Location */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">State *</label>
-          <input
-            type="text"
-            className="form-control"
-            name="state"
-            value={formData.state}
-            onChange={handleChange}
-            required
-            placeholder="Enter your state"
-          />
-        </div>
+      <textarea
+        placeholder="Description"
+        value={formData.description}
+        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+        required
+      />
 
-        {/* User Details */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">Name</label>
-          <input
-            type="text"
-            className="form-control"
-            name="name"
-            value={formData.name}
-            readOnly
-          />
-        </div>
+      <input
+        type="number"
+        placeholder="Price"
+        value={formData.price}
+        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+        required
+      />
 
-        <div className="mb-4">
-          <label className="form-label fw-bold">
-            Mobile Phone Number * <small className="text-muted">+91</small>
-          </label>
-          <input
-            type="tel"
-            className="form-control"
-            name="mobile"
-            value={formData.mobile}
-            onChange={handleChange}
-            required
-            pattern="[0-9]{10}"
-            placeholder="Enter 10 digit mobile number"
-          />
-        </div>
+      <input
+        type="file"
+        multiple
+        onChange={(e) => setFormData({ ...formData, photos: Array.from(e.target.files) })}
+      />
 
-        {/* Submit Button */}
-        <button type="submit" className="btn btn-primary w-100 fw-bold">
-          POST NOW
-        </button>
-      </form>
-    </div>
+      <input
+        type="text"
+        placeholder="State"
+        value={formData.state}
+        onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+        required
+      />
+
+      <input
+        type="tel"
+        placeholder="Mobile"
+        value={formData.mobile}
+        onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+        required
+      />
+
+
+      <input
+      type="email"
+      id="email"
+      name="email"
+      value={formData.email || ''}
+      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+      placeholder="Enter your email"
+      />
+
+      <button type="submit" style={{ marginTop: 20 }}>
+        Submit
+      </button>
+    </form>
   );
 };
 
