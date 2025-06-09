@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const ForSaleHousesForm = () => {
+const OwnerDetailsForm = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     type: "",
     bhk: "",
     bathrooms: "",
     furnishing: "",
-    projectStatus: "",
     listedBy: "",
     superBuiltupArea: "",
     carpetArea: "",
@@ -15,17 +17,18 @@ const ForSaleHousesForm = () => {
     floorNo: "",
     carParking: "",
     facing: "",
-    projectName: "",
     adTitle: "",
     description: "",
-    price: "",
+    rent: "",
+    locality: "",
+    location: "",
+    bachelorsAllowed: "",
     photos: [],
     state: "",
-    name: "Akashta Bhalke",
+    name: "Akshata Bhalke",
     mobile: "",
   });
 
-  // Handle form input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "photos") {
@@ -43,16 +46,18 @@ const ForSaleHousesForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    alert("Form submitted! Check console for data.");
-    console.log(formData);
+    console.log("Submitted Form Data:", formData);
+    navigate("/confirmation"); // ✅ Redirect to confirmation page
   };
 
   return (
-    <div className="container my-3">
-      <h2 className="mb-3">Post Property - For Sale: Houses & Apartments</h2>
-      <form onSubmit={handleSubmit} className="border p-4 rounded shadow-sm bg-white">
-
+    <div className="container my-4" style={{ maxWidth: "700px" }}>
+      <h2 className="mb-4 text-center">Post Property - For Rent</h2>
+      <form
+        onSubmit={handleSubmit}
+        className="p-4 rounded bg-white shadow"
+        style={{ boxShadow: "0 0 15px rgba(0,0,0,0.15)" }}
+      >
         {/* Property Type */}
         <div className="mb-3">
           <label className="form-label fw-bold">Type *</label>
@@ -81,10 +86,9 @@ const ForSaleHousesForm = () => {
             onChange={handleChange}
           >
             <option value="">Select BHK</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
+            {[1, 2, 3, 4].map((val) => (
+              <option key={val} value={val}>{val}</option>
+            ))}
             <option value="4+">4+</option>
           </select>
         </div>
@@ -99,10 +103,9 @@ const ForSaleHousesForm = () => {
             onChange={handleChange}
           >
             <option value="">Select Bathrooms</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
+            {[1, 2, 3, 4].map((val) => (
+              <option key={val} value={val}>{val}</option>
+            ))}
             <option value="4+">4+</option>
           </select>
         </div>
@@ -123,23 +126,7 @@ const ForSaleHousesForm = () => {
           </select>
         </div>
 
-        {/* Project Status */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">Project Status</label>
-          <select
-            className="form-select"
-            name="projectStatus"
-            value={formData.projectStatus}
-            onChange={handleChange}
-          >
-            <option value="">Select Project Status</option>
-            <option value="New Launch">New Launch</option>
-            <option value="Ready to Move">Ready to Move</option>
-            <option value="Under Construction">Under Construction</option>
-          </select>
-        </div>
-
-        {/* Listed by */}
+        {/* Listed By */}
         <div className="mb-3">
           <label className="form-label fw-bold">Listed By</label>
           <select
@@ -155,10 +142,10 @@ const ForSaleHousesForm = () => {
           </select>
         </div>
 
-        {/* Areas and Maintenance */}
+        {/* Area Inputs */}
         <div className="row">
           <div className="col-md-4 mb-3">
-            <label className="form-label fw-bold">Super Builtup Area (sqft) *</label>
+            <label className="form-label fw-bold">Super Builtup Area *</label>
             <input
               type="number"
               className="form-control"
@@ -170,7 +157,7 @@ const ForSaleHousesForm = () => {
             />
           </div>
           <div className="col-md-4 mb-3">
-            <label className="form-label fw-bold">Carpet Area (sqft)</label>
+            <label className="form-label fw-bold">Carpet Area</label>
             <input
               type="number"
               className="form-control"
@@ -181,7 +168,7 @@ const ForSaleHousesForm = () => {
             />
           </div>
           <div className="col-md-4 mb-3">
-            <label className="form-label fw-bold">Maintenance (Monthly)</label>
+            <label className="form-label fw-bold">Maintenance</label>
             <input
               type="number"
               className="form-control"
@@ -193,7 +180,7 @@ const ForSaleHousesForm = () => {
           </div>
         </div>
 
-        {/* Floors */}
+        {/* Floor and Parking */}
         <div className="row">
           <div className="col-md-6 mb-3">
             <label className="form-label fw-bold">Total Floors</label>
@@ -203,7 +190,6 @@ const ForSaleHousesForm = () => {
               name="totalFloors"
               value={formData.totalFloors}
               onChange={handleChange}
-              min="0"
             />
           </div>
           <div className="col-md-6 mb-3">
@@ -214,12 +200,11 @@ const ForSaleHousesForm = () => {
               name="floorNo"
               value={formData.floorNo}
               onChange={handleChange}
-              min="0"
             />
           </div>
         </div>
 
-        {/* Car Parking */}
+        {/* Parking, Facing */}
         <div className="mb-3">
           <label className="form-label fw-bold">Car Parking</label>
           <select
@@ -228,16 +213,13 @@ const ForSaleHousesForm = () => {
             value={formData.carParking}
             onChange={handleChange}
           >
-            <option value="">Select Parking</option>
+            <option value="">Select</option>
             <option value="0">0</option>
             <option value="1">1</option>
             <option value="2">2</option>
-            <option value="3">3</option>
             <option value="3+">3+</option>
           </select>
         </div>
-
-        {/* Facing */}
         <div className="mb-3">
           <label className="form-label fw-bold">Facing</label>
           <input
@@ -246,79 +228,87 @@ const ForSaleHousesForm = () => {
             name="facing"
             value={formData.facing}
             onChange={handleChange}
-            placeholder="e.g. East, West"
           />
         </div>
 
-        {/* Project Name */}
+        {/* Ad Title & Description */}
         <div className="mb-3">
-          <label className="form-label fw-bold">
-            Project Name <small className="text-muted">(max 70 chars)</small>
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="projectName"
-            value={formData.projectName}
-            onChange={handleChange}
-            maxLength={70}
-          />
-        </div>
-
-        {/* Ad Title */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">
-            Ad title * <small className="text-muted">(max 70 chars)</small>
-          </label>
+          <label className="form-label fw-bold">Ad Title *</label>
           <input
             type="text"
             className="form-control"
             name="adTitle"
             value={formData.adTitle}
             onChange={handleChange}
-            maxLength={70}
             required
-            placeholder="Mention key features e.g. brand, age, type"
           />
         </div>
-
-        {/* Description */}
         <div className="mb-3">
-          <label className="form-label fw-bold">
-            Description * <small className="text-muted">(max 4096 chars)</small>
-          </label>
+          <label className="form-label fw-bold">Description *</label>
           <textarea
             className="form-control"
             name="description"
             value={formData.description}
             onChange={handleChange}
-            rows={5}
-            maxLength={4096}
             required
-            placeholder="Include condition, features, reason for selling"
           />
         </div>
 
-        {/* Price */}
+        {/* Rent */}
         <div className="mb-3">
-          <label className="form-label fw-bold">Price *</label>
-          <div className="input-group">
-            <span className="input-group-text">₹</span>
-            <input
-              type="number"
-              className="form-control"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              required
-              min="0"
-            />
-          </div>
+          <label className="form-label fw-bold">Rent (Monthly) *</label>
+          <input
+            type="number"
+            className="form-control"
+            name="rent"
+            value={formData.rent}
+            onChange={handleChange}
+            required
+          />
         </div>
 
-        {/* Upload Photos */}
-        <div className="mb-4">
-          <label className="form-label fw-bold">Upload up to 20 photos</label>
+        {/* Locality & Location */}
+        <div className="mb-3">
+          <label className="form-label fw-bold">Locality *</label>
+          <input
+            type="text"
+            className="form-control"
+            name="locality"
+            value={formData.locality}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label fw-bold">Location *</label>
+          <input
+            type="text"
+            className="form-control"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        {/* Bachelors Allowed */}
+        <div className="mb-3">
+          <label className="form-label fw-bold">Bachelors Allowed?</label>
+          <select
+            className="form-select"
+            name="bachelorsAllowed"
+            value={formData.bachelorsAllowed}
+            onChange={handleChange}
+          >
+            <option value="">Select</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+
+        {/* Upload */}
+        <div className="mb-3">
+          <label className="form-label fw-bold">Upload Photos</label>
           <input
             type="file"
             name="photos"
@@ -327,10 +317,9 @@ const ForSaleHousesForm = () => {
             className="form-control"
             onChange={handleChange}
           />
-          <small className="text-muted">Max 20 photos, each up to 5MB</small>
         </div>
 
-        {/* Location */}
+        {/* State, Mobile, Name */}
         <div className="mb-3">
           <label className="form-label fw-bold">State *</label>
           <input
@@ -340,11 +329,8 @@ const ForSaleHousesForm = () => {
             value={formData.state}
             onChange={handleChange}
             required
-            placeholder="Enter your state"
           />
         </div>
-
-        {/* User Details */}
         <div className="mb-3">
           <label className="form-label fw-bold">Name</label>
           <input
@@ -355,11 +341,8 @@ const ForSaleHousesForm = () => {
             readOnly
           />
         </div>
-
         <div className="mb-4">
-          <label className="form-label fw-bold">
-            Mobile Phone Number * <small className="text-muted">+91</small>
-          </label>
+          <label className="form-label fw-bold">Mobile *</label>
           <input
             type="tel"
             className="form-control"
@@ -368,12 +351,11 @@ const ForSaleHousesForm = () => {
             onChange={handleChange}
             required
             pattern="[0-9]{10}"
-            placeholder="Enter 10 digit mobile number"
           />
         </div>
 
         {/* Submit Button */}
-        <button type="submit" className="btn btn-primary w-100 fw-bold">
+        <button type="submit" className="btn btn-success w-100 fw-bold">
           POST NOW
         </button>
       </form>
@@ -381,4 +363,4 @@ const ForSaleHousesForm = () => {
   );
 };
 
-export default ForSaleHousesForm;
+export default OwnerDetailsForm; 

@@ -1,9 +1,12 @@
 import React from 'react';
+import './BuilderBanner.css';
 
 function BuilderBanner() {
   return (
-    <div className="bg-dark text-white text-center py-4 mg-3 mt-5">
-      <h4>🏗️ 120+ Builders Connected with Us</h4>
+    <div className="banner-wrapper">
+      <div className="scrolling-text">
+        🏗️ 120+ Builders Connected with Us — 🏠 Find Your Dream Home Today — 📞 Contact Now!
+      </div>
     </div>
   );
 }

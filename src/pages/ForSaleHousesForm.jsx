@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 
-const ForSaleHousesForm = () => {
-  const [formData, setFormData] = useState({
+const ForSaleHousesForm = ({ onSuccess }) => {
+  const initialState = {
     type: "",
     bhk: "",
     bathrooms: "",
@@ -24,18 +24,31 @@ const ForSaleHousesForm = () => {
     state: "",
     name: "Akashta Bhalke",
     mobile: "",
-  });
+  };
 
-  const [image, setImage] = useState(null);
-  const [photos, setPhotos] = useState([]);
+  const [formData, setFormData] = useState(initialState);
 
-  // Handle form input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
     if (name === "photos") {
+      const validFiles = [];
+      for (let file of files) {
+        if (file.size > 5 * 1024 * 1024) {
+          alert(`${file.name} exceeds the 5MB size limit.`);
+        } else {
+          validFiles.push(file);
+        }
+      }
+
+      if (validFiles.length > 20) {
+        alert("You can upload up to 20 photos only.");
+        validFiles.splice(20);
+      }
+
       setFormData((prev) => ({
         ...prev,
-        photos: [...files],
+        photos: validFiles,
       }));
     } else {
       setFormData((prev) => ({
@@ -45,60 +58,41 @@ const ForSaleHousesForm = () => {
     }
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   // You can add form validation & submission logic here
-  //   alert("Form submitted! Check console for data.");
-  //   console.log(formData);
-  // };
-
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+    const data = new FormData();
 
-  const data = new FormData();
-
-  // Append all fields except photos
-  for (const key in formData) {
-    if (key !== "photos") {
-      data.append(key, formData[key]);
-      console.log(`${key}: ${formData[key]}`);
+    // Append text fields
+    for (const key in formData) {
+      if (key !== "photos") {
+        data.append(key, formData[key]);
+      }
     }
-  }
 
-  // Append each photo file individually from formData.photos
-  formData.photos.forEach((file) => {
-    console.log("Appending photo file:", file.name);
-    data.append("photos", file);
-  });
+    // Append image files
+    formData.photos.forEach((file) => {
+      data.append("photos", file);
+    });
 
-  try {
-    const res = await axios.post("http://localhost:8080/api/properties/add", data);
-    console.log("Uploaded successfully:", res.data);
-  } catch (err) {
-    console.error("Error uploading property:", err.response?.data || err.message);
-  }
-};
-
-
-
-
-
+    try {
+      const res = await axios.post("http://localhost:8080/api/properties/all", data);
+      console.log("Uploaded successfully:", res.data);
+      if (onSuccess) onSuccess(res.data);
+      setFormData({ ...initialState });
+    } catch (err) {
+      console.error("Error uploading property:", err.response?.data || err.message);
+    }
+  };
 
   return (
     <div className="container my-3">
       <h2 className="mb-3">Post Property - For Sale: Houses & Apartments</h2>
       <form onSubmit={handleSubmit} className="border p-4 rounded shadow-sm bg-white">
 
-        {/* Property Type */}
+        {/* --- Property Type --- */}
         <div className="mb-3">
           <label className="form-label fw-bold">Type *</label>
-          <select
-            className="form-select"
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            required
-          >
+          <select className="form-select" name="type" value={formData.type} onChange={handleChange} required>
             <option value="">Select Type</option>
             <option value="Flats / Apartments">Flats / Apartments</option>
             <option value="Independent / Builder Floors">Independent / Builder Floors</option>
@@ -107,51 +101,33 @@ const ForSaleHousesForm = () => {
           </select>
         </div>
 
+        {/* BHK, Bathrooms, Furnishing, Project Status, ListedBy */}
         {/* BHK */}
         <div className="mb-3">
           <label className="form-label fw-bold">BHK</label>
-          <select
-            className="form-select"
-            name="bhk"
-            value={formData.bhk}
-            onChange={handleChange}
-          >
+          <select className="form-select" name="bhk" value={formData.bhk} onChange={handleChange}>
             <option value="">Select BHK</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="4+">4+</option>
+            {[1, 2, 3, 4, "4+"].map((val) => (
+              <option key={val} value={val}>{val}</option>
+            ))}
           </select>
         </div>
 
         {/* Bathrooms */}
         <div className="mb-3">
           <label className="form-label fw-bold">Bathrooms</label>
-          <select
-            className="form-select"
-            name="bathrooms"
-            value={formData.bathrooms}
-            onChange={handleChange}
-          >
+          <select className="form-select" name="bathrooms" value={formData.bathrooms} onChange={handleChange}>
             <option value="">Select Bathrooms</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="4+">4+</option>
+            {[1, 2, 3, 4, "4+"].map((val) => (
+              <option key={val} value={val}>{val}</option>
+            ))}
           </select>
         </div>
 
         {/* Furnishing */}
         <div className="mb-3">
           <label className="form-label fw-bold">Furnishing</label>
-          <select
-            className="form-select"
-            name="furnishing"
-            value={formData.furnishing}
-            onChange={handleChange}
-          >
+          <select className="form-select" name="furnishing" value={formData.furnishing} onChange={handleChange}>
             <option value="">Select Furnishing</option>
             <option value="Furnished">Furnished</option>
             <option value="Semi-Furnished">Semi-Furnished</option>
@@ -162,12 +138,7 @@ const ForSaleHousesForm = () => {
         {/* Project Status */}
         <div className="mb-3">
           <label className="form-label fw-bold">Project Status</label>
-          <select
-            className="form-select"
-            name="projectStatus"
-            value={formData.projectStatus}
-            onChange={handleChange}
-          >
+          <select className="form-select" name="projectStatus" value={formData.projectStatus} onChange={handleChange}>
             <option value="">Select Project Status</option>
             <option value="New Launch">New Launch</option>
             <option value="Ready to Move">Ready to Move</option>
@@ -175,15 +146,10 @@ const ForSaleHousesForm = () => {
           </select>
         </div>
 
-        {/* Listed by */}
+        {/* Listed By */}
         <div className="mb-3">
           <label className="form-label fw-bold">Listed By</label>
-          <select
-            className="form-select"
-            name="listedBy"
-            value={formData.listedBy}
-            onChange={handleChange}
-          >
+          <select className="form-select" name="listedBy" value={formData.listedBy} onChange={handleChange}>
             <option value="">Select Option</option>
             <option value="Builder">Builder</option>
             <option value="Dealer">Dealer</option>
@@ -191,148 +157,66 @@ const ForSaleHousesForm = () => {
           </select>
         </div>
 
-        {/* Areas and Maintenance */}
+        {/* Areas */}
         <div className="row">
           <div className="col-md-4 mb-3">
-            <label className="form-label fw-bold">Super Builtup Area (sqft) *</label>
-            <input
-              type="number"
-              className="form-control"
-              name="superBuiltupArea"
-              value={formData.superBuiltupArea}
-              onChange={handleChange}
-              required
-              min="0"
-            />
+            <label className="form-label fw-bold">Super Builtup Area *</label>
+            <input type="number" className="form-control" name="superBuiltupArea" value={formData.superBuiltupArea} onChange={handleChange} required />
           </div>
           <div className="col-md-4 mb-3">
-            <label className="form-label fw-bold">Carpet Area (sqft)</label>
-            <input
-              type="number"
-              className="form-control"
-              name="carpetArea"
-              value={formData.carpetArea}
-              onChange={handleChange}
-              min="0"
-            />
+            <label className="form-label fw-bold">Carpet Area</label>
+            <input type="number" className="form-control" name="carpetArea" value={formData.carpetArea} onChange={handleChange} />
           </div>
           <div className="col-md-4 mb-3">
-            <label className="form-label fw-bold">Maintenance (Monthly)</label>
-            <input
-              type="number"
-              className="form-control"
-              name="maintenance"
-              value={formData.maintenance}
-              onChange={handleChange}
-              min="0"
-            />
+            <label className="form-label fw-bold">Maintenance</label>
+            <input type="number" className="form-control" name="maintenance" value={formData.maintenance} onChange={handleChange} />
           </div>
         </div>
 
-        {/* Floors */}
+        {/* Floor Details */}
         <div className="row">
           <div className="col-md-6 mb-3">
             <label className="form-label fw-bold">Total Floors</label>
-            <input
-              type="number"
-              className="form-control"
-              name="totalFloors"
-              value={formData.totalFloors}
-              onChange={handleChange}
-              min="0"
-            />
+            <input type="number" className="form-control" name="totalFloors" value={formData.totalFloors} onChange={handleChange} />
           </div>
           <div className="col-md-6 mb-3">
             <label className="form-label fw-bold">Floor No</label>
-            <input
-              type="number"
-              className="form-control"
-              name="floorNo"
-              value={formData.floorNo}
-              onChange={handleChange}
-              min="0"
-            />
+            <input type="number" className="form-control" name="floorNo" value={formData.floorNo} onChange={handleChange} />
           </div>
         </div>
 
         {/* Car Parking */}
         <div className="mb-3">
           <label className="form-label fw-bold">Car Parking</label>
-          <select
-            className="form-select"
-            name="carParking"
-            value={formData.carParking}
-            onChange={handleChange}
-          >
-            <option value="">Select Parking</option>
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="3+">3+</option>
+          <select className="form-select" name="carParking" value={formData.carParking} onChange={handleChange}>
+            {[0, 1, 2, 3, "3+"].map((val) => (
+              <option key={val} value={val}>{val}</option>
+            ))}
           </select>
         </div>
 
         {/* Facing */}
         <div className="mb-3">
           <label className="form-label fw-bold">Facing</label>
-          <input
-            type="text"
-            className="form-control"
-            name="facing"
-            value={formData.facing}
-            onChange={handleChange}
-            placeholder="e.g. East, West"
-          />
+          <input type="text" className="form-control" name="facing" value={formData.facing} onChange={handleChange} placeholder="e.g. East, West" />
         </div>
 
         {/* Project Name */}
         <div className="mb-3">
-          <label className="form-label fw-bold">
-            Project Name <small className="text-muted">(max 70 chars)</small>
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="projectName"
-            value={formData.projectName}
-            onChange={handleChange}
-            maxLength={70}
-          />
+          <label className="form-label fw-bold">Project Name</label>
+          <input type="text" className="form-control" name="projectName" value={formData.projectName} onChange={handleChange} maxLength={70} />
         </div>
 
         {/* Ad Title */}
         <div className="mb-3">
-          <label className="form-label fw-bold">
-            Ad title * <small className="text-muted">(max 70 chars)</small>
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="adTitle"
-            value={formData.adTitle}
-            onChange={handleChange}
-            maxLength={70}
-            required
-            placeholder="Mention key features e.g. brand, age, type"
-          />
+          <label className="form-label fw-bold">Ad Title *</label>
+          <input type="text" className="form-control" name="adTitle" value={formData.adTitle} onChange={handleChange} maxLength={70} required />
         </div>
 
         {/* Description */}
         <div className="mb-3">
-          <label className="form-label fw-bold">
-            Description * <small className="text-muted">(max 4096 chars)</small>
-          </label>
-          <textarea
-            className="form-control"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            rows={5}
-            maxLength={4096}
-            required
-            placeholder="Include condition, features, reason for selling"
-          />
+          <label className="form-label fw-bold">Description *</label>
+          <textarea className="form-control" name="description" value={formData.description} onChange={handleChange} rows={5} maxLength={4096} required />
         </div>
 
         {/* Price */}
@@ -340,78 +224,34 @@ const ForSaleHousesForm = () => {
           <label className="form-label fw-bold">Price *</label>
           <div className="input-group">
             <span className="input-group-text">₹</span>
-            <input
-              type="number"
-              className="form-control"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              required
-              min="0"
-            />
+            <input type="number" className="form-control" name="price" value={formData.price} onChange={handleChange} required />
           </div>
         </div>
 
-        {/* Upload Photos */}
-        <div className="mb-4">
+        {/* Photos */}
+        <div className="mb-3">
           <label className="form-label fw-bold">Upload up to 20 photos</label>
-          <input
-            type="file"
-            name="photos"
-            multiple
-            accept="image/*"
-            className="form-control"
-            onChange={handleChange}
-          />
-          <small className="text-muted">Max 20 photos, each up to 5MB</small>
+          <input type="file" name="photos" multiple accept="image/*" className="form-control" onChange={handleChange} />
         </div>
 
         {/* Location */}
         <div className="mb-3">
           <label className="form-label fw-bold">State *</label>
-          <input
-            type="text"
-            className="form-control"
-            name="state"
-            value={formData.state}
-            onChange={handleChange}
-            required
-            placeholder="Enter your state"
-          />
+          <input type="text" className="form-control" name="state" value={formData.state} onChange={handleChange} required />
         </div>
 
-        {/* User Details */}
+        {/* Contact Info */}
         <div className="mb-3">
           <label className="form-label fw-bold">Name</label>
-          <input
-            type="text"
-            className="form-control"
-            name="name"
-            value={formData.name}
-            readOnly
-          />
+          <input type="text" className="form-control" name="name" value={formData.name} readOnly />
         </div>
 
         <div className="mb-4">
-          <label className="form-label fw-bold">
-            Mobile Phone Number * <small className="text-muted">+91</small>
-          </label>
-          <input
-            type="tel"
-            className="form-control"
-            name="mobile"
-            value={formData.mobile}
-            onChange={handleChange}
-            required
-            pattern="[0-9]{10}"
-            placeholder="Enter 10 digit mobile number"
-          />
+          <label className="form-label fw-bold">Mobile *</label>
+          <input type="tel" className="form-control" name="mobile" value={formData.mobile} onChange={handleChange} required pattern="[0-9]{10}" />
         </div>
 
-        {/* Submit Button */}
-        <button type="submit" className="btn btn-primary w-100 fw-bold">
-          POST NOW
-        </button>
+        <button type="submit" className="btn btn-primary w-100 fw-bold">POST NOW</button>
       </form>
     </div>
   );

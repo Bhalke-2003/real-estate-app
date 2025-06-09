@@ -1,217 +1,116 @@
-import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import bgImage from '../assets/house.jpg';
-import { FaMicrophone, FaSearch } from 'react-icons/fa';
-import './HeroSection.css';
+import React, { useState } from 'react';
+import { Modal, Button, Form } from 'react-bootstrap';
+import './LoginModal.css'; // Use your custom styling here
 
-const locationsList = ['Pune', 'Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai', 'Nagpur', 'Kolkata', 'Ahmedabad'];
+const LoginModal = ({ onClose }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    role: '',
+  });
 
-const Hero = () => {
-  const [location, setLocation] = useState('');
-  const [type, setType] = useState('');
-  const [filteredLocations, setFilteredLocations] = useState([]);
-  const navigate = useNavigate();
-  const recognitionRef = useRef(null);
+  const [errors, setErrors] = useState({});
 
-  const handleSearch = () => {
-    const queryParams = new URLSearchParams();
-    if (location) queryParams.append('location', location);
-    if (type) queryParams.append('type', type);
-    navigate(`/search?${queryParams.toString()}`);
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: '' });
   };
 
-  const handleVoiceInput = () => {
-    if (!('webkitSpeechRecognition' in window)) {
-      alert('Speech recognition not supported in this browser.');
-      return;
+  const validate = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) newErrors.name = 'Name is required';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Invalid email format';
+    if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
+    if (!formData.role) newErrors.role = 'Please select a role';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      console.log('Form submitted:', formData);
+      alert('Form submitted successfully!');
+      // You can call an API here
+      onClose(); // Close the modal after submission
     }
-
-    const recognition = new window.webkitSpeechRecognition();
-    recognition.lang = 'en-IN';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      setLocation(transcript);
-      filterLocations(transcript);
-    };
-
-    recognition.onerror = (event) => {
-      console.error(event.error);
-    };
-
-    recognition.start();
-    recognitionRef.current = recognition;
-  };
-
-  const filterLocations = (input) => {
-    const results = locationsList.filter((loc) =>
-      loc.toLowerCase().startsWith(input.toLowerCase())
-    );
-    setFilteredLocations(input ? results : []);
-  };
-
-  const handleLocationChange = (e) => {
-    const input = e.target.value;
-    setLocation(input);
-    filterLocations(input);
-  };
-
-  const handleSuggestionClick = (suggestion) => {
-    setLocation(suggestion);
-    setFilteredLocations([]);
   };
 
   return (
-    <div style={{
-      position: 'relative',
-      height: '420px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      overflow: 'hidden',
-      padding: '20px',
-    }}>
-      {/* Blurred Background */}
-      <div style={{
-        position: 'absolute',
-        top: 0, left: 0, right: 0, bottom: 0,
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        filter: 'blur(6px)',
-        zIndex: 0,
-      }}></div>
+    <Modal show onHide={onClose} centered dialogClassName="custom-login-modal">
+      <Modal.Header closeButton>
+        <Modal.Title className="w-100 text-center">
+          <div style={{ fontWeight: 'bold', fontSize: '24px' }}>DAG</div>
+          <div style={{ fontSize: '14px', color: '#6c757d' }}>Your Trusted Real Estate Partner</div>
+        </Modal.Title>
+      </Modal.Header>
 
-      {/* Dark Overlay */}
-      <div style={{
-        position: 'absolute',
-        top: 0, left: 0, right: 0, bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.4)',
-        zIndex: 1,
-      }}></div>
-
-      {/* Foreground Content */}
-      <div style={{
-        position: 'relative',
-        zIndex: 2,
-        width: '100%',
-        maxWidth: '800px',
-        textAlign: 'center',
-        color: 'white',
-      }}>
-        <h1 style={{
-          fontSize: '2.8rem',
-          fontWeight: 'bold',
-          lineHeight: '1.3',
-          textShadow: '1px 1px 4px rgba(0,0,0,0.8)',
-          marginBottom: '20px',
-        }}>
-          Find your perfect home or <br /> investment opportunity with DAG
-        </h1>
-
-        <p style={{
-          fontSize: '1.4rem',
-          fontWeight: '500',
-          textShadow: '1px 1px 3px rgba(0,0,0,0.6)',
-          marginBottom: '35px',
-        }}>
-          Your reliable real estate partner across India.
-        </p>
-
-        {/* Search Box */}
-        <div style={{
-          display: 'flex',
-          gap: '10px',
-          width: '100%',
-          maxWidth: '900px',
-          margin: '0 auto',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          {/* Location Input */}
-          <div style={{ position: 'relative', flex: 2 }}>
-            <input
+      <Modal.Body>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
               type="text"
-              placeholder="Enter location"
-              className="form-control"
-              value={location}
-              onChange={handleLocationChange}
-              style={{
-                paddingRight: '90px',
-                backgroundColor: 'white',
-                borderRadius: '6px',
-                border: '1px solid #ccc',
-                height: '45px',
-                fontSize: '1rem',
-                color: '#333',
-              }}
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Enter your name"
+              isInvalid={!!errors.name}
             />
-            <FaMicrophone
-              onClick={handleVoiceInput}
-              style={{
-                position: 'absolute',
-                right: '50px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                cursor: 'pointer',
-                color: '#1e3a8a',
-                fontSize: '1.2rem',
-              }}
-            />
-            <FaSearch
-              onClick={handleSearch}
-              style={{
-                position: 'absolute',
-                right: '15px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                cursor: 'pointer',
-                color: '#1e3a8a',
-                fontSize: '1.2rem',
-              }}
-            />
-            {filteredLocations.length > 0 && (
-              <ul className="autocomplete-suggestions" style={{ zIndex: 10 }}>
-                {filteredLocations.map((suggestion) => (
-                  <li
-                    key={suggestion}
-                    onClick={() => handleSuggestionClick(suggestion)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {suggestion}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+            <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
+          </Form.Group>
 
-          {/* Property Type Select */}
-          <select
-            className="form-select"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            style={{
-              flex: 1,
-              height: '45px',
-              borderRadius: '6px',
-              border: '1px solid #ccc',
-              fontSize: '1rem',
-              backgroundColor: 'white',
-              color: '#333',
-            }}
-          >
-            <option value="">Property Type</option>
-            <option value="Flat">Flat</option>
-            <option value="Villa">Villa</option>
-            <option value="Independent House">Independent House</option>
-            <option value="Commercial">Commercial</option>
-          </select>
-        </div>
-      </div>
-    </div>
+          <Form.Group className="mb-3">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter your email"
+              isInvalid={!!errors.email}
+            />
+            <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Enter password"
+              isInvalid={!!errors.password}
+            />
+            <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-4">
+            <Form.Label>Role</Form.Label>
+            <Form.Select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              isInvalid={!!errors.role}
+            >
+              <option value="">Select Role</option>
+              <option value="USER">USER</option>
+              <option value="ADMIN">ADMIN</option>
+            </Form.Select>
+            <Form.Control.Feedback type="invalid">{errors.role}</Form.Control.Feedback>
+          </Form.Group>
+
+          <div className="d-flex justify-content-center">
+            <Button type="submit" className="login-btn">Submit</Button>
+          </div>
+        </Form>
+      </Modal.Body>
+    </Modal>
   );
 };
 
-export default Hero;
+export default LoginModal;
