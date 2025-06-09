@@ -27,6 +27,7 @@ public class PropertyController {
     @Autowired
     private PropertyService propertyService;
 
+    @Autowired
     private PropertyRepository propertyRepo ;
 
     @PostMapping("/add")

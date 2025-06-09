@@ -5,6 +5,7 @@ import "./ForSale.css";
 
 const ForSaleHousesForm = () => {
   const [formData, setFormData] = useState({
+    name:"",
     type: "",
     bhk: "",
     bathrooms: "",
@@ -94,7 +95,7 @@ const ForSaleHousesForm = () => {
     <form onSubmit={handleSubmit} style={{ maxWidth: 600, margin: "auto" }}>
       <input
         type="text"
-        placeholder="Name"
+        placeholder="name"
         value={formData.type}
         onChange={(e) => setFormData({ ...formData, type: e.target.value })}
         required
