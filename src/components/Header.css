@@ -16,3 +16,12 @@
 .custom-post-dropdown .dropdown-toggle::after {
   display: none !important;
 }
+.ms-auto{
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+.ms-auto:hover{
+  text-decoration: dashed;
+  color: rgb(24, 25, 90);
+}
