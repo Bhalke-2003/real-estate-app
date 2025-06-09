@@ -1,0 +1,21 @@
+.builder-img {
+  height: 180px;
+  object-fit: contain;
+  padding: 10px;
+}
+
+.builder-card {
+  transition: transform 0.3s ease;
+  background: #ffff;
+  border-radius: 1rem;
+  border-color: #ffb68f;
+  border-width: 1px;
+
+}
+.builder-card:hover {
+  border-color: rgb(69, 101, 232);
+}
+
+.builder-card:hover {
+  transform: translateY(-5px);
+}

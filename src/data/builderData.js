@@ -1,29 +1,181 @@
+import dlf from '../assets/builders/DLF.png';
+import lodha from '../assets/builders/lodha.png';
+import prst from '../assets/builders/prestige.png';
+import god from '../assets/builders/godrej.png';
+import brig from '../assets/builders/brigade.png';
+import Sobha from '../assets/builders/sobha.png';
+import obr from '../assets/builders/oberoi.png';
+import tata from '../assets/builders/tata.png';
+import mahd from '../assets/builders/mahindra.png';
+import rahj from '../assets/builders/raheja.png';
+import unt from '../assets/builders/unitech.png';
+import jay from '../assets/builders/jaypee.png';
+import bht from '../assets/builders/bhartiya.jpg';
+import emi from '../assets/builders/emami.png';
+import mntr from '../assets/builders/manri.png';
+import rnwl from '../assets/builders/runwal.png';
+import rust from '../assets/builders/rustam.png';
+import kolte from '../assets/builders/kolte.jpg';
+import salar from '../assets/builders/salar.png';
+import gaur from '../assets/builders/gaur.png';
+import purv from '../assets/builders/purva.jpg';
+import hira from '../assets/builders/hira.png';
+import ats from '../assets/builders/ats.png';
+import shapu from '../assets/builders/shapur.png';
+import sob from '../assets/builders/sob.jpg';
+
 const builders = [
-  { name: 'DLF Limited', contact: '011-12345678', email: 'contact@dlf.in' },
-  { name: 'Lodha Group', contact: '022-98765432', email: 'sales@lodha.com' },
-  { name: 'Prestige Estates', contact: '080-23456789', email: 'info@prestige.com' },
-  { name: 'Godrej Properties', contact: '022-34567890', email: 'support@godrej.com' },
-  { name: 'Sobha Developers', contact: '080-87654321', email: 'sales@sobha.com' },
-  { name: 'Brigade Group', contact: '080-22334455', email: 'info@brigadegroup.com' },
-  { name: 'Oberoi Realty', contact: '022-55667788', email: 'contact@oberoirealty.com' },
-  { name: 'Puravankara', contact: '080-99887766', email: 'info@puravankara.com' },
-  { name: 'Tata Housing', contact: '022-66778899', email: 'hello@tatahousing.com' },
-  { name: 'Hiranandani Developers', contact: '022-11223344', email: 'sales@hiranandani.com' },
-  { name: 'ATS Greens', contact: '0120-22334455', email: 'info@atsgreens.com' },
-  { name: 'Mahindra Lifespace', contact: '022-99887766', email: 'contact@mahindralife.com' },
-  { name: 'Raheja Developers', contact: '011-66554433', email: 'support@raheja.com' },
-  { name: 'Unitech Group', contact: '0124-99887766', email: 'info@unitechgroup.com' },
-  { name: 'Jaypee Greens', contact: '0120-66778899', email: 'sales@jaypee.in' },
-  { name: 'Bhartiya City', contact: '080-44332211', email: 'contact@bhartiyacity.com' },
-  { name: 'Emami Realty', contact: '033-55667788', email: 'info@emamirealty.com' },
-  { name: 'Mantri Developers', contact: '080-66554433', email: 'support@mantri.com' },
-  { name: 'Runwal Group', contact: '022-44556677', email: 'info@runwal.com' },
-  { name: 'Rustomjee', contact: '022-99881122', email: 'sales@rustomjee.com' },
-  { name: 'Kolte Patil Developers', contact: '020-12345678', email: 'info@koltepatil.com' },
-  { name: 'Salarpuria Sattva', contact: '080-23455678', email: 'hello@sattva.com' },
-  { name: 'Gaursons India', contact: '0120-45678901', email: 'sales@gaursons.com' },
-  { name: 'Shapoorji Pallonji', contact: '022-44556688', email: 'contact@shapoorji.com' },
-  { name: 'Sobha Ltd', contact: '080-22334455', email: 'support@sobhaltd.com' }
+  {
+    id: 1,
+    name: 'DLF Limited',
+    description: '20+ years of experience in residential and commercial projects.',
+    image: dlf,
+  },
+  {
+    id: 2,
+    name: 'Lodha Group',
+    description: 'Delivering luxurious homes across the city.',
+    image: lodha,
+  },
+  {
+    id: 3,
+    name: 'Prestige Estates',
+    description: 'Specializing in modern apartment complexes and smart housing.',
+    image: prst,
+  },
+  {
+    id: 4,
+    name: 'Godrej Properties',
+    description: '20+ years of experience in residential and commercial projects.',
+    image: god,
+  },
+  {
+    id: 5,
+    name: 'Brigade Group',
+    description: 'Specializing in modern apartment complexes and smart housing.',
+    image: brig,
+  },
+  {
+    id: 6,
+    name: 'Sobha Developers',
+    description: 'Delivering luxurious homes across the city.',
+    image: Sobha,
+  },
+  {
+    id: 7,
+    name: 'Oberoi Realty',
+    description: '20+ years of experience in residential and commercial projects.',
+    image: obr,
+  },
+  {
+    id: 8,
+    name: 'Tata Housing',
+    description: 'Specializing in modern apartment complexes and smart housing.',
+    image: tata,
+  },
+  {
+    id: 9,
+    name: 'Mahindra Lifespace',
+    description: 'Specializing in modern apartment complexes and smart housing.',
+    image: mahd,
+  },
+  {
+    id: 10,
+    name: 'Raheja Developers',
+    description: '20+ years of experience in residential and commercial projects.',
+    image: rahj,
+  },
+  {
+    id: 11,
+    name: 'Unitech Group',
+    description: 'Delivering luxurious homes across the city.',
+    image: unt,
+  },
+  {
+    id: 12,
+    name: 'Jaypee Greens',
+    description: 'Specializing in modern apartment complexes and smart housing.',
+    image: jay,
+  },
+  {
+    id: 13,
+    name: 'Bhartiya City',
+    description: '20+ years of experience in residential and commercial projects.',
+    image: bht,
+  },
+  {
+    id: 14,
+    name: 'Emami Realty',
+    description: 'Delivering luxurious homes across the city.',
+    image: emi,
+  },
+  {
+    id: 15,
+    name: 'Mantri Developers',
+    description: 'Specializing in modern apartment complexes and smart housing.',
+    image: mntr,
+  },
+  {
+    id: 16,
+    name: 'Runwal Group',
+    description: '20+ years of experience in residential and commercial projects.',
+    image: rnwl,
+  },
+  {
+    id: 17,
+    name: 'Rustomjee',
+    description: 'Delivering luxurious homes across the city.',
+    image: rust,
+  },
+  {
+    id: 18,
+    name: 'Kolte Patil Developers',
+    description: 'Specializing in modern apartment complexes and smart housing.',
+    image: kolte,
+  },
+  {
+    id: 19,
+    name: 'Salarpuria Sattva',
+    description: '20+ years of experience in residential and commercial projects.',
+    image: salar,
+  },
+  {
+    id: 20,
+    name: 'Gaursons India',
+    description: 'Delivering luxurious homes across the city.',
+    image: gaur,
+  },
+  {
+    id: 21,
+    name: 'Puravankara',
+    description: 'Delivering luxurious homes across the city.',
+    image: purv,
+  },
+  {
+    id: 22,
+    name: 'Hiranandani Developers',
+    description: '20+ years of experience in residential and commercial projects.',
+    image: hira,
+  },
+  {
+    id: 23,
+    name: 'ATS Greens',
+    description: 'Delivering luxurious homes across the city.',
+    image: ats,
+  },
+  {
+    id: 24,
+    name: 'Shapoorji Pallonji',
+    description: 'Specializing in modern apartment complexes and smart housing.',
+    image: shapu,
+  },
+  {
+    id: 25,
+    name: 'Sobha LTD',
+    description: 'Specializing in modern apartment complexes and smart housing.',
+    image: sob,
+  },
 ];
 
 export default builders;
+  

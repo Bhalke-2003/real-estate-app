@@ -13,7 +13,6 @@
   font-size: 0.8rem;
 }
 
-/* Remove default dropdown arrow */
 .custom-post-dropdown .dropdown-toggle::after {
   display: none !important;
 }

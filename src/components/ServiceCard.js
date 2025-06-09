@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // ✅ Required for navigation
+import { Link } from 'react-router-dom';
 
 const ServiceCard = ({ service }) => {
   return (

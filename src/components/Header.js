@@ -2,8 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaCaretDown } from 'react-icons/fa';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
-import './Header.css'; // You'll define custom styles here
-
+import './Header.css';
 const Header = () => {
   const navigate = useNavigate();
 
