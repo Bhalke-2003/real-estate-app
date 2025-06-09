@@ -1,0 +1,44 @@
+.builder-banner-wrapper {
+  background:  #0e1c44; /* dark modern gradient */
+  padding: 16px;
+  overflow: hidden;
+  position: relative;
+  margin-top: 50px;
+}
+
+.scrolling-text {
+  white-space: nowrap;
+  display: inline-block;
+  animation: scroll-left 15s linear infinite;
+  color: #f8fafc;
+  font-size: 1.3rem;
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.scrolling-text .icon {
+  color: #38bdf8;
+  font-size: 1.5rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes scroll-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}

@@ -1,0 +1,87 @@
+.custom-login-modal {
+  max-width: 450px;
+  width: 90%;
+  height: 350px;
+  margin: auto;
+}
+ .custom-login-modal .modal-body {
+  height: 400px;        
+  overflow-y: auto;    
+}
+.custom-login-modal .modal-content {
+  padding: 20px 20px;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s ease;
+}
+ .modal-title div:first-child {
+  font-weight: bold;
+  font-size: 28px;
+  color: #0a0a0a;
+  animation: fadeInDown 0.5s ease-in-out;
+}
+
+.modal-title div:last-child {
+  font-size: 14px;
+  color: #232424;
+}
+/*Login button style*/
+.login-btn {
+  font-size: 14px;
+  margin-top: 20px;
+  height: 38px;
+  background-color: #0d1b2a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  width: 300px;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #0d1b2a
+;
+}
+
+
+/* Form label styling */
+.form-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Input fields */
+.form-control {
+  font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #dbd3d1;
+  box-shadow: 0 0 0 2px rgba(17, 17, 17, 0.2);
+}
+
+/* Invalid feedback */
+.is-invalid {
+  border-color: #dc3545;
+}
+
+
+
+/* Animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
