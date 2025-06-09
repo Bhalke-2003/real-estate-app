@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import ServiceCard from '../components/ServiceCard';
 import services from '../data/serviceData';
-import OwnerDetailsForm from './OwnerDetailsForm';
+//import OwnerDetailsForm from './OwnerDetailsForm';
 import ForSaleForm from './ForSale';
 import RentalList from './RentalList';
 import BuilderInfo from './BuilderInfo';
+import ForSaleHousesForm from './ForSaleHousesForm';
 
 const ServicesPage = () => {
   const [showRentalForm, setShowRentalForm] = useState(false);
@@ -35,7 +36,6 @@ const ServicesPage = () => {
   const handleSaleFormSubmit = (property) => {
     setSaleProperties([...saleProperties, property]);
     setShowSaleForm(false);
-    // You can add a SalesList page similar to RentalList if needed
     alert("House for Sale added successfully!");
   };
 
@@ -52,7 +52,7 @@ const ServicesPage = () => {
         ))}
       </div>
 
-      {showRentalForm && <OwnerDetailsForm onSubmit={handleRentalFormSubmit} />}
+      {showRentalForm && <ForSaleHousesForm onSubmit={handleRentalFormSubmit} />}
       {showSaleForm && <ForSaleForm onSave={handleSaleFormSubmit} />}
       {showRentals && <RentalList properties={rentalProperties} />}
       {showBuilders && <BuilderInfo />}
