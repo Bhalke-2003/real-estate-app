@@ -8,8 +8,13 @@ import BuilderInfo from './pages/BuilderInfo';
 import LoginModal from './components/LoginModal';
 import SearchResults from './pages/SearchResults';
 import PostProperty from './pages/PostProperty';
+import ServicesPage from "./pages/ServicesPage"
+import RentalList from './pages/RentalList';
 
+import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 
 function App() {
@@ -23,6 +28,8 @@ function App() {
         <Route path="/builder" element={<BuilderInfo />} />
          <Route path="/search" element={<SearchResults />} />
         <Route path="/postproperty" element={<PostProperty />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/rental" element={<RentalList />} />
 
       </Routes>
 

@@ -1,7 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import bgImage from '../assets/house.jpg';
 import { FaMicrophone, FaSearch } from 'react-icons/fa';
+
+
+
 import './HeroSection.css';
 
 const locationsList = ['Pune', 'Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai', 'Nagpur', 'Kolkata', 'Ahmedabad'];

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from 'axios';
 
 const ForSaleHousesForm = () => {
   const [formData, setFormData] = useState({
@@ -26,9 +25,6 @@ const ForSaleHousesForm = () => {
     mobile: "",
   });
 
-  const [image, setImage] = useState(null);
-  const [photos, setPhotos] = useState([]);
-
   // Handle form input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -45,44 +41,12 @@ const ForSaleHousesForm = () => {
     }
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   // You can add form validation & submission logic here
-  //   alert("Form submitted! Check console for data.");
-  //   console.log(formData);
-  // };
-
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  const data = new FormData();
-
-  // Append all fields except photos
-  for (const key in formData) {
-    if (key !== "photos") {
-      data.append(key, formData[key]);
-      console.log(`${key}: ${formData[key]}`);
-    }
-  }
-
-  // Append each photo file individually from formData.photos
-  formData.photos.forEach((file) => {
-    console.log("Appending photo file:", file.name);
-    data.append("photos", file);
-  });
-
-  try {
-    const res = await axios.post("http://localhost:8080/api/properties/add", data);
-    console.log("Uploaded successfully:", res.data);
-  } catch (err) {
-    console.error("Error uploading property:", err.response?.data || err.message);
-  }
-};
-
-
-
-
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    alert("Form submitted! Check console for data.");
+    console.log(formData);
+  };
 
   return (
     <div className="container my-3">
