@@ -1,30 +1,36 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const RentalList = () => {
   const [rentalFlats, setRentalFlats] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    const stored = localStorage.getItem('rentalFlats') || '[]'; // fallback to empty array string
-
-    try {
-      const parsed = JSON.parse(stored);
-      // Only update state if parsed is an array
-      if (Array.isArray(parsed)) {
-        setRentalFlats(parsed);
-      } else {
-        setRentalFlats([]);
-        console.warn("Rental flats data is not an array, resetting to empty array");
+    const fetchRentalFlats = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/properties/all"); // Update this to your actual path
+        setRentalFlats(response.data);
+      } catch (err) {
+        setError("Failed to fetch rental listings.");
+        console.error("Error fetching properties:", err);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Failed to parse rental flats from localStorage:", error);
-      setRentalFlats([]);
-    }
+    };
+
+    fetchRentalFlats();
   }, []);
 
   return (
     <div className="container my-5">
       <h3 className="mb-4">Rental Listings</h3>
-      {rentalFlats.length === 0 ? (
+
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p className="text-danger">{error}</p>
+      ) : rentalFlats.length === 0 ? (
         <p>No rental properties found.</p>
       ) : (
         <div className="row">
@@ -34,11 +40,14 @@ const RentalList = () => {
                 <img
                   src={flat.image || "https://via.placeholder.com/300x200"}
                   className="card-img-top"
-                  alt={flat.title || "Rental Property"}
+                  alt={flat.projectName || "Rental Property"}
                 />
                 <div className="card-body">
-                  <h5 className="card-title">{flat.title || "No Title"}</h5>
-                  <p className="card-text">{flat.location || "Location not provided"}</p>
+                  <h5 className="card-title">{flat.name || "No Title"}</h5>
+                  <p className="card-text">{flat.listedBy || "Location not provided"}</p>
+                  <p className="card-text">{flat.mobile || "Location not provided"}</p>
+                  <p className="card-text">{flat.state || "Location not provided"}</p>
+
                   <p className="card-text">
                     <strong>{flat.price || "Price not available"}</strong>
                   </p>

@@ -40,6 +40,7 @@ public class Property {
     private String state;
     private String name;
     private String mobile;
+    private String email ;
 
     // Getters and setters (or use Lombok @Data)
 }

@@ -27,6 +27,7 @@ public class PropertyController {
     @Autowired
     private PropertyService propertyService;
 
+    @Autowired
     private PropertyRepository propertyRepo ;
 
     @PostMapping("/add")
@@ -51,13 +52,14 @@ public class PropertyController {
             @RequestParam String state,
             @RequestParam String name,
             @RequestParam String mobile,
+            @RequestParam String email,
             @RequestParam("photos") MultipartFile[] photos  // Accept multiple files here
     ) throws IOException {
 
         Property property = propertyService.saveProperty(type, bhk, bathrooms, furnishing, projectStatus,
                 listedBy, superBuiltupArea, carpetArea, maintenance, totalFloors, floorNo,
                 carParking, facing, projectName, adTitle, description, price, state,
-                name, mobile, photos);
+                name, mobile,email, photos);
 
         return new ResponseEntity<>(property, HttpStatus.CREATED);
     }
