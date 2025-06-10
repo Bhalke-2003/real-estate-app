@@ -29,7 +29,7 @@ public class PropertyService {
                                  Integer totalFloors, Integer floorNo, String carParking,
                                  String facing, String projectName, String adTitle,
                                  String description, Double price, String state,
-                                 String name, String mobile, MultipartFile[] photos) throws IOException {
+                                 String name, String mobile,String email, MultipartFile[] photos) throws IOException {
 
         Path uploadPath = Paths.get(UPLOAD_DIR);
         if (!Files.exists(uploadPath)) {
@@ -70,6 +70,7 @@ public class PropertyService {
         property.setState(state);
         property.setName(name);
         property.setMobile(mobile);
+        property.setEmail(email);
 
         return propertyRepository.save(property);
     }
