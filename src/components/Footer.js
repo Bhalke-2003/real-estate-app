@@ -9,7 +9,7 @@ const Footer = () => {
       <Container>
         <Row className="text-center text-md-start">
           <Col md={3} className="mb-4">
-            <h5>🏠 RealEstatePro</h5>
+            <h5>DAG</h5>
             <p>Your trusted partner in buying, selling, and renting properties across India.</p>
           </Col>
           <Col md={3} className="mb-4">
@@ -38,7 +38,7 @@ const Footer = () => {
           </Col>
         </Row>
         <hr />
-        <p className="text-center mb-0">© {new Date().getFullYear()} RealEstatePro. All rights reserved.</p>
+        <p className="text-center mb-0">© {new Date().getFullYear()} DAG. All rights reserved.</p>
       </Container>
     </footer>
   );

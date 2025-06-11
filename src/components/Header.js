@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaCaretDown } from 'react-icons/fa';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import './Header.css';
+import DAGLogo from '../assets/DAG.png';
+
 const Header = () => {
   const navigate = useNavigate();
 
@@ -13,7 +15,15 @@ const Header = () => {
   return (
     <Navbar bg="light" expand="lg" sticky="top" className="shadow-sm">
       <Container>
-        <Navbar.Brand as={Link} to="/">🏠 RealEstate</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">
+        <img
+        src={DAGLogo}
+        alt="DAG Logo"
+        height="60"
+        className="d-inline-block align-top"
+        />
+        </Navbar.Brand>
+
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
