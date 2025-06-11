@@ -6,6 +6,7 @@ import Home from './pages/Home';
 
 import BuilderInfo from './pages/BuilderInfo';
 import LoginSignup from './pages/LoginModal';
+import Register from './pages/Register';
 import SearchResults from './pages/SearchResults';
 import PostProperty from './pages/PostProperty';
 import ServicesPage from "./pages/ServicesPage"
@@ -20,6 +21,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import Dashboard from './pages/Admin/Dashboard';
 
 
 function App() {
@@ -31,6 +33,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/builder" element={<BuilderInfo />} />
         <Route path="/login" element={<LoginSignup />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/postproperty" element={<PostProperty />} />
         <Route path="/services" element={<ServicesPage />} />
@@ -40,6 +43,7 @@ function App() {
         <Route path="/post/shop-rent" element={<ShopOfficeRentForm />} />
         <Route path="/post/shop-sale" element={<ShopOfficeSaleForm />} />
         <Route path="/post/builder" element={<BuilderInfo />} />
+        <Route path="/admin/dashboard" element={<Dashboard />} />
       </Routes>
 
       <Footer />

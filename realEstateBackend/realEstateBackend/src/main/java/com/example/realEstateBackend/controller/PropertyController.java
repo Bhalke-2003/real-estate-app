@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +28,6 @@ public class PropertyController {
     @Autowired
     private PropertyService propertyService;
 
-    @Autowired
     private PropertyRepository propertyRepo ;
 
     @PostMapping("/add")
@@ -52,14 +52,13 @@ public class PropertyController {
             @RequestParam String state,
             @RequestParam String name,
             @RequestParam String mobile,
-            @RequestParam String email,
             @RequestParam("photos") MultipartFile[] photos  // Accept multiple files here
     ) throws IOException {
 
         Property property = propertyService.saveProperty(type, bhk, bathrooms, furnishing, projectStatus,
                 listedBy, superBuiltupArea, carpetArea, maintenance, totalFloors, floorNo,
                 carParking, facing, projectName, adTitle, description, price, state,
-                name, mobile,email, photos);
+                name, mobile, photos);
 
         return new ResponseEntity<>(property, HttpStatus.CREATED);
     }
@@ -77,6 +76,30 @@ public class PropertyController {
         return propertyRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Property not found with id " + id));
     }
+
+    // Get only approved properties for users
+    @GetMapping("/approved")
+    public List<Property> getApprovedProperties() {
+        return propertyRepo.findByStatus(Property.Status.APPROVED);
+    }
+
+    // Admin approval endpoint
+    @PutMapping("/approve/{id}")
+    public Property approveProperty(@PathVariable Long id) {
+        Property property = propertyRepo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Property not found"));
+        property.setStatus(Property.Status.APPROVED);
+        return propertyRepo.save(property);
+}
+
+    // Admin reject endpoint (optional)
+    @PutMapping("/reject/{id}")
+    public Property rejectProperty(@PathVariable Long id) {
+        Property property = propertyRepo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Property not found"));
+        property.setStatus(Property.Status.REJECTED);
+        return propertyRepo.save(property);
+}
 
     }
 

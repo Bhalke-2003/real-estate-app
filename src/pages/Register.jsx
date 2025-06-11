@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Modal, Button, Form } from 'react-bootstrap';
+//import './Register.css'; // Use your custom styling here
 
-const LoginModal = ({ onClose }) => {
+const Register = ({ onClose }) => {
   const [formData, setFormData] = useState({
+    name: '',
     email: '',
     password: '',
     role: '',
   });
 
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate(); // for navigation after login
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,6 +20,8 @@ const LoginModal = ({ onClose }) => {
 
   const validate = () => {
     const newErrors = {};
+
+    if (!formData.name.trim()) newErrors.name = 'Name is required';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Invalid email format';
     if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
     if (!formData.role) newErrors.role = 'Please select a role';
@@ -28,36 +30,21 @@ const LoginModal = ({ onClose }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (validate()) {
-      try {
-        const response = await axios.post('http://localhost:8080/api/user/login', formData);
-        const result = response.data;
 
-        // Save data to localStorage
-        localStorage.setItem('user', JSON.stringify({
-          email: formData.email,
-          role: formData.role,
-          token: result.token || 'dummy-token', // update if you return JWT later
-        }));
-
-        alert('Login successful!');
-
-        // Redirect based on role
-        if (formData.role === 'ADMIN') {
-          navigate('/admin/dashboard');
-        } else {
-          navigate('/user/home'); // change this to your user dashboard
-        }
-
-        onClose();
-      } catch (error) {
-        console.error('Login error:', error);
-        alert('Invalid email or password');
-      }
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (validate()) {
+    try {
+      const res = await axios.post('http://localhost:8080/api/user/register', formData);
+      alert(`Success: ${res.data}`);
+      onClose();
+    } catch (err) {
+      console.error(err);
+      alert('Error: ' + (err.response?.data || 'Registration failed.'));
     }
-  };
+  }
+};
+
 
   return (
     <Modal show onHide={onClose} centered dialogClassName="custom-login-modal">
@@ -70,6 +57,19 @@ const LoginModal = ({ onClose }) => {
 
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Enter your name"
+              isInvalid={!!errors.name}
+            />
+            <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
+          </Form.Group>
+
           <Form.Group className="mb-3">
             <Form.Label>Email</Form.Label>
             <Form.Control
@@ -112,16 +112,13 @@ const LoginModal = ({ onClose }) => {
           </Form.Group>
 
           <div className="d-flex justify-content-center">
-            <Button type="submit" className="login-btn">Login</Button>
+            <Button type="submit" className="login-btn">Submit</Button>
           </div>
         </Form>
-
-        <div className="text-center mt-3">
-          <a href='/register'>Register here!</a>
-        </div>
+        <a href='/login'>Login !</a>
       </Modal.Body>
     </Modal>
   );
 };
 
-export default LoginModal;
+export default Register;

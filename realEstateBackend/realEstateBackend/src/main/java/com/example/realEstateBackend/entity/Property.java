@@ -1,6 +1,8 @@
 package com.example.realEstateBackend.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -40,7 +42,15 @@ public class Property {
     private String state;
     private String name;
     private String mobile;
-    private String email ;
+
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.PENDING;
+
+    public enum Status {
+    PENDING,
+    APPROVED,
+    REJECTED
+}
 
     // Getters and setters (or use Lombok @Data)
 }

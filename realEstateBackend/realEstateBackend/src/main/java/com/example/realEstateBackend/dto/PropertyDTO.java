@@ -33,5 +33,4 @@ public class PropertyDTO {
     private String state;
     private String name;
     private String mobile;
-    private String email ;
 }
