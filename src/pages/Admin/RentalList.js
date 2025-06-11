@@ -1,7 +1,7 @@
 import React from 'react';
 
-const RentalList = () => {
-  return <h1>Rental List</h1>;
+const Rentals = () => {
+  return <h2>Manage Rentals</h2>;
 };
 
-export default RentalList;
+export default Rentals;

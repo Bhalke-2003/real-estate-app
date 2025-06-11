@@ -1,7 +1,7 @@
 import React from 'react';
 
-const SellerList = () => {
-  return <h1>Seller List</h1>;
+const Sellers = () => {
+  return <h2>Manage Sellers</h2>;
 };
 
-export default SellerList;
+export default Sellers;

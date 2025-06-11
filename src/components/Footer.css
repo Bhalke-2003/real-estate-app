@@ -1,9 +1,13 @@
-/* Footer.css */
 .custom-footer {
+  bottom: 0;
+  width: 100%;
+  z-index: 9999;
   background-color: #0d1b2a;
-  color: #020202;
-  padding: 40px 0;
+  color: #080808;
+  padding: 10px 0;
+  text-align: center;
 }
+
 
 .custom-footer h5,
 .custom-footer h6 {

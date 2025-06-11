@@ -1,7 +1,7 @@
 import React from 'react';
 
 const BuilderInfo = () => {
-  return <h1>Builder Info Management</h1>;
+  return <h2>Manage Builder Info</h2>;
 };
 
 export default BuilderInfo;

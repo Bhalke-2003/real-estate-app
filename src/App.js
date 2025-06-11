@@ -11,6 +11,7 @@ import SearchResults from './pages/SearchResults';
 import PostProperty from './pages/PostProperty';
 import ServicesPage from "./pages/ServicesPage"
 import RentalList from './pages/RentalList';
+import AdminPanel from './AdminPannel';
 
 import ForSaleForm from './pages/ForSale';
 import ForSaleHousesForm from './pages/ForSaleHousesForm';
@@ -21,7 +22,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Dashboard from './pages/Admin/Dashboard';
+//import Dashboard from './pages/Admin/Dashboard';
 
 
 function App() {
@@ -43,7 +44,8 @@ function App() {
         <Route path="/post/shop-rent" element={<ShopOfficeRentForm />} />
         <Route path="/post/shop-sale" element={<ShopOfficeSaleForm />} />
         <Route path="/post/builder" element={<BuilderInfo />} />
-        <Route path="/admin/dashboard" element={<Dashboard />} />
+        
+        <Route path="/admin/*" element={<AdminPanel />} />
       </Routes>
 
       <Footer />

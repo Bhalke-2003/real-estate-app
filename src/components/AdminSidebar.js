@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './AdminSidebar.css'; // optional styling
+import './AdminSidebar.css';
 
 const AdminSidebar = () => {
   return (
@@ -13,7 +13,6 @@ const AdminSidebar = () => {
         <li><Link to="/admin/rentals">Rentals</Link></li>
       </ul>
     </div>
-    
   );
 };
 
