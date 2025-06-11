@@ -32,3 +32,10 @@
   margin-bottom: 0.5rem;
   color: #555;
 }
+
+.card .btn {
+  width: 100%;
+}
+.card .btn + .btn {
+  margin-top: 0.5rem;
+}

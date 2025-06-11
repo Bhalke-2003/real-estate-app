@@ -1,11 +1,9 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import './ForSale.css';
 
-// Import forms or build in-place
-import ForSaleHousesForm from "../pages/ForSaleHousesForm"; // ✅ Correct
-
+import ForSaleHousesForm from '../pages/ForSaleHousesForm';
 import ForRentHousesForm from '../pages/ForRentHousesForm';
-// import others...
 
 const PostProperty = () => {
   const location = useLocation();
@@ -14,7 +12,12 @@ const PostProperty = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h2 className="text-3xl font-semibold mb-6">Post Property - {propertyType}</h2>
+      {/* Marquee Heading */}
+      <div className="marquee-container">
+        <h2 className="marquee-heading">
+          🏠 List Your Property Now - Find Your Perfect Buyer or Tenant Today! 🏠
+        </h2>
+      </div>
 
       {propertyType === 'For Sale: Houses and Apartments' && <ForSaleHousesForm />}
       {propertyType === 'For Rent: Houses and Apartments' && <ForRentHousesForm />}

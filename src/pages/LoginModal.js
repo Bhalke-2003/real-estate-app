@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import './LoginModal.css'; // Use your custom styling here
+//import './LoginModal.css'; // Use your custom styling here
 
 const LoginModal = ({ onClose }) => {
   const [formData, setFormData] = useState({

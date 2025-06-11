@@ -1,26 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import builders from '../data/builderData';
-import SearchBar from "../components/SearchBar";
 import './Builder.css';
 
 const BuilderInfo = () => {
-  const [query, setQuery] = useState("");
-
-  const filteredBuilders = builders.filter(builder =>
-    builder.name.toLowerCase().includes(query.toLowerCase()) ||
-    builder.description.toLowerCase().includes(query.toLowerCase())
-  );
-
   return (
     <div className="container my-5">
-      <h2 className="mb-4">Our Trusted Builders</h2>
-
-      {/* Search Bar */}
-      <SearchBar onSearch={setQuery} />
+      <h2 className="text-center mb-4">Our Trusted Builders</h2>
 
       <div className="row">
-        {filteredBuilders.length > 0 ? (
-          filteredBuilders.map((builder) => (
+        {builders.length > 0 ? (
+          builders.map((builder) => (
             <div key={builder.id} className="col-md-4 mb-4">
               <div className="card builder-card shadow-sm h-100">
                 <img 
@@ -37,7 +26,7 @@ const BuilderInfo = () => {
             </div>
           ))
         ) : (
-          <p className="text-muted">No builders match your search.</p>
+          <p className="text-muted">No builder data available.</p>
         )}
       </div>
     </div>

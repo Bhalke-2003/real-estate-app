@@ -5,11 +5,16 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 
 import BuilderInfo from './pages/BuilderInfo';
-import LoginSignup from './pages/LoginSignup';
+import LoginSignup from './pages/LoginModal';
 import SearchResults from './pages/SearchResults';
 import PostProperty from './pages/PostProperty';
 import ServicesPage from "./pages/ServicesPage"
 import RentalList from './pages/RentalList';
+
+import ForSaleForm from './pages/ForSale';
+import ForSaleHousesForm from './pages/ForSaleHousesForm';
+import ShopOfficeRentForm from './pages/ShopOfficeRentForm';
+import ShopOfficeSaleForm from './pages/ShopOfficeSaleForm';
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -24,14 +29,17 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-      
         <Route path="/builder" element={<BuilderInfo />} />
         <Route path="/login" element={<LoginSignup />} />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/postproperty" element={<PostProperty />} />
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/rental" element={<RentalList />} />
-
+        <Route path="/post/rent" element={<ForSaleHousesForm />} />
+        <Route path="/post/sale" element={<ForSaleForm />} />
+        <Route path="/post/shop-rent" element={<ShopOfficeRentForm />} />
+        <Route path="/post/shop-sale" element={<ShopOfficeSaleForm />} />
+        <Route path="/post/builder" element={<BuilderInfo />} />
       </Routes>
 
       <Footer />

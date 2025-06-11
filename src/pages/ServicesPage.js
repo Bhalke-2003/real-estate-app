@@ -1,61 +1,121 @@
 import React, { useState } from 'react';
 import ServiceCard from '../components/ServiceCard';
 import services from '../data/serviceData';
-//import OwnerDetailsForm from './OwnerDetailsForm';
-import ForSaleForm from './ForSale';
-import RentalList from './RentalList';
+import ForSale from './ForSale';
+import ForRent from './ForSaleHousesForm';
+import ShopOfficeRentForm from './ShopOfficeRentForm';
+import ShopOfficeSaleForm from './ShopOfficeSaleForm';
 import BuilderInfo from './BuilderInfo';
-import ForSaleHousesForm from './ForSaleHousesForm';
+import './ServicePage.css';
 
 const ServicesPage = () => {
-  const [showRentalForm, setShowRentalForm] = useState(false);
-  const [showSaleForm, setShowSaleForm] = useState(false);
-  const [showRentals, setShowRentals] = useState(false);
-  const [showBuilders, setShowBuilders] = useState(false);
-  const [rentalProperties, setRentalProperties] = useState([]);
-  const [saleProperties, setSaleProperties] = useState([]);
+  const [showInquiry, setShowInquiry] = useState(false);
+  const [inquiryService, setInquiryService] = useState('');
+  const [activeForm, setActiveForm] = useState('');
 
-  const handleCardClick = (title) => {
-    setShowRentalForm(false);
-    setShowSaleForm(false);
-    setShowRentals(false);
-    setShowBuilders(false);
-
-    if (title === 'HOUSE FOR RENT') setShowRentalForm(true);
-    else if (title === 'HOUSE FOR SALE') setShowSaleForm(true);
-    else if (title === 'RENTAL') setShowRentals(true);
-    else if (title === 'BUILDER DETAILS') setShowBuilders(true);
+  const handlePostClick = (title) => {
+    setActiveForm(title);
   };
 
-  const handleRentalFormSubmit = (property) => {
-    setRentalProperties([...rentalProperties, property]);
-    setShowRentalForm(false);
-    setShowRentals(true);
+  const handleInquiryClick = (title) => {
+    setInquiryService(title);
+    setShowInquiry(true);
   };
 
-  const handleSaleFormSubmit = (property) => {
-    setSaleProperties([...saleProperties, property]);
-    setShowSaleForm(false);
-    alert("House for Sale added successfully!");
+  const closeInquiry = () => {
+    setShowInquiry(false);
+    setInquiryService('');
   };
 
   return (
     <div className="container my-5">
-      <h2 className="mb-4">Our Services</h2>
-      <div className="row">
-        {services.map((service) => (
-          <div className="col-md-4 mb-4" key={service.id}>
-            <div onClick={() => handleCardClick(service.title)}>
-              <ServiceCard service={service} />
+      <h2 className="text-center mb-4 fw-bold text-primary">Post Your Property</h2>
+
+      {/* Top Cards */}
+      <div className="row mb-5">
+        {services.slice(0, 3).map((service) => (
+          <div className="col-md-4 mb-5" key={service.id}>
+            <ServiceCard service={service} />
+            <div className="d-flex justify-content-center mt-3 gap-3">
+              <button
+                className="btn btn-primary"
+                onClick={() => handlePostClick(service.title)}
+              >
+                {service.title === 'BUILDER DETAILS' ? 'Builder' : 'Post Property'}
+              </button>
+              <button
+                className="btn btn-outline-secondary"
+                onClick={() => handleInquiryClick(service.title)}
+              >
+                Inquiry
+              </button>
             </div>
           </div>
         ))}
       </div>
 
-      {showRentalForm && <ForSaleHousesForm onSubmit={handleRentalFormSubmit} />}
-      {showSaleForm && <ForSaleForm onSave={handleSaleFormSubmit} />}
-      {showRentals && <RentalList properties={rentalProperties} />}
-      {showBuilders && <BuilderInfo />}
+      <h2 className="text-center mb-4 fw-bold text-primary">Shops and Offices</h2>
+      <div className="row justify-content-center mb-5">
+        {services.slice(3).map((service) => (
+          <div className="col-md-4 mb-5" key={service.id}>
+            <ServiceCard service={service} />
+            <div className="d-flex justify-content-center mt-3 gap-3">
+              <button
+                className="btn btn-primary"
+                onClick={() => handlePostClick(service.title)}
+              >
+                {service.title === 'BUILDER DETAILS' ? 'Builder' : 'Post Property'}
+              </button>
+              <button
+                className="btn btn-outline-secondary"
+                onClick={() => handleInquiryClick(service.title)}
+              >
+                Inquiry
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Render Forms Conditionally */}
+      {activeForm === 'House/Appartment for Rent' && <ForRent />}
+      {activeForm === 'House/Appartment for Sale' && <ForSale />}
+      {activeForm === 'BUILDER DETAILS' && <BuilderInfo />}
+      {activeForm === 'Add Shop/Office for Rent' && <ShopOfficeRentForm />}
+      {activeForm === 'Add Shop/Office for Sale' && <ShopOfficeSaleForm />}
+
+      {/* Inquiry Modal */}
+      {showInquiry && (
+        <div className="inquiry-popup">
+          <div className="inquiry-form position-relative">
+            <button
+              type="button"
+              className="close-btn"
+              onClick={closeInquiry}
+              aria-label="Close"
+            >
+              &times;
+            </button>
+
+            <h5 className="mb-3 text-center">Inquiry for: {inquiryService}</h5>
+            <form>
+              <div className="mb-3">
+                <input type="text" className="form-control" placeholder="Name" required />
+              </div>
+              <div className="mb-3">
+                <input type="email" className="form-control" placeholder="Email" required />
+              </div>
+              <div className="mb-3">
+                <input type="tel" className="form-control" placeholder="Contact" required />
+              </div>
+              <div className="mb-3">
+                <input type="text" className="form-control" placeholder="Location" required />
+              </div>
+              <button type="submit" className="btn btn-success w-100">Submit</button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

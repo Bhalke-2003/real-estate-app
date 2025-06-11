@@ -1,40 +1,40 @@
-import rentalImg from '../assets/images/renting.png';
-import sellImg from '../assets/images/sell.png';
-import rentImg from '../assets/images/rent.png';
-import builderImg from '../assets/images/builders.png';
+import rentalImg from '../assets/images/house.jpg';
+import sellImg from '../assets/images/apartment.jpg';
+import rentImg from '../assets/images/office.jpg';
+import builderImg from '../assets/images/builders.jpg';
+import shopImg from '../assets/images/shop.jpg';
+
 
 const services = [
   {
     id: 1,
-    title: "Add House for Rent",
-    description: "Owners can list their property for rent.",
-    icon: "🏠",
+    title: 'House/Appartment for Rent',
+    description: 'List your house or flat for rent',
     image: rentalImg,
-    link: "/postproperty?propertyType=For+Sale:+Houses+and+Apartments",
   },
   {
     id: 2,
-    title: "Add House for Sale",
-    description: "Owners can list their property for sale.",
-    icon: "🏡",
+    title: 'House/Appartment for Sale',
+    description: 'Sell your residential property quickly',
     image: sellImg,
-    link: "/postproperty?propertyType=For+Sale:+Houses+and+Apartments",
   },
   {
     id: 3,
-    title: "Buy/ Rent house",
-    description: "Browse available rental listings.",
-    icon: "🔍",
-    image: rentImg,
-    link: "/rental",
+    title: 'BUILDER DETAILS',
+    description: 'View trusted builder information',
+    image: builderImg,
   },
   {
     id: 4,
-    title: "BUILDER DETAILS",
-    description: "Information for property builders.",
-    icon: "👷",
-    image: builderImg,
-    link: "/builder",
+    title: 'Add Shop/Office for Rent',
+    description: 'List commercial space for rent',
+    image: rentImg,
+  },
+  {
+    id: 5,
+    title: 'Add Shop/Office for Sale',
+    description: 'Sell commercial property easily',
+    image: shopImg,
   }
 ];
 
