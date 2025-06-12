@@ -11,7 +11,7 @@ const LoginModal = ({ onClose }) => {
   });
 
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate(); // for navigation after login
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

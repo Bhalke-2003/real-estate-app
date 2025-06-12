@@ -7,15 +7,22 @@ import ShopOfficeRentForm from './ShopOfficeRentForm';
 import ShopOfficeSaleForm from './ShopOfficeSaleForm';
 import BuilderInfo from './BuilderInfo';
 import './ServicePage.css';
+import { useNavigate } from 'react-router-dom';
 
 const ServicesPage = () => {
   const [showInquiry, setShowInquiry] = useState(false);
   const [inquiryService, setInquiryService] = useState('');
   const [activeForm, setActiveForm] = useState('');
+  const navigate = useNavigate();
 
   const handlePostClick = (title) => {
-    setActiveForm(title);
+    if (title === 'House/Appartment for Rent') navigate('/post/rent');
+    else if (title === 'House/Appartment for Sale') navigate('/post/sale');
+    else if (title === 'BUILDER DETAILS') navigate('/post/builder');
+    else if (title === 'Add Shop/Office for Rent') navigate('/post/shop-rent');
+    else if (title === 'Add Shop/Office for Sale') navigate('/post/shop-sale');
   };
+
 
   const handleInquiryClick = (title) => {
     setInquiryService(title);

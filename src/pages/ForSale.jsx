@@ -1,114 +1,279 @@
-import React, { useState } from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import React, { useState } from "react";
+import axios from "axios";
+import "./ForSale.css";
 
-const ForSaleForm = ({ onSave }) => {
-  const [form, setForm] = useState({
-    apartmentType: '',
-    bhkType: '',
-    floor: '',
-    totalFloor: '',
-    propertyAge: '',
-    facing: '',
-    builtUpArea: '',
+
+const ForSaleHousesForm = () => {
+  const [formData, setFormData] = useState({
+    name:"",
+    type: "",
+    bhk: "",
+    bathrooms: "",
+    furnishing: "",
+    projectStatus: "",
+    listedBy: "",
+    superBuiltupArea: "",
+    carpetArea: "",
+    maintenance: "",
+    totalFloors: "",
+    floorNo: "",
+    carParking: "",
+    facing: "",
+    projectName: "",
+    adTitle: "",
+    description: "",
+    price: "",
+    photos: [],
+    state: "",
+    mobile: "",
+    email: "",
   });
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitted data:', form);
-    if (onSave) onSave(form);
+
+    const data = new FormData();
+
+    for (const key in formData) {
+      if (key !== "photos") {
+        data.append(key, formData[key]);
+      }
+    }
+
+    formData.photos.forEach((file) => {
+      data.append("photos", file);
+    });
+
+    // Save listing to localStorage
+    const listing = {
+      type: formData.type,
+      price: formData.price,
+      state: formData.state,
+      contact: formData.mobile,
+      email: formData.email,
+    };
+
+    const existingListings = JSON.parse(localStorage.getItem("saleListings")) || [];
+    existingListings.push(listing);
+    localStorage.setItem("saleListings", JSON.stringify(existingListings));
+
+    try {
+      const res = await axios.post("http://localhost:8080/api/properties/add", data);
+      console.log("Uploaded successfully:", res.data);
+      alert("Property submitted!");
+    } catch (err) {
+      console.error("Error uploading property:", err.response?.data || err.message);
+      alert("Failed to submit property");
+    }
+
+    setFormData({
+      type: "",
+      bhk: "",
+      bathrooms: "",
+      furnishing: "",
+      projectStatus: "",
+      listedBy: "",
+      superBuiltupArea: "",
+      carpetArea: "",
+      maintenance: "",
+      totalFloors: "",
+      floorNo: "",
+      carParking: "",
+      facing: "",
+      projectName: "",
+      adTitle: "",
+      description: "",
+      price: "",
+      photos: [],
+      state: "",
+      mobile: "",
+      email: "",
+    });
   };
 
   return (
-    <Form className="p-3 bg-white shadow rounded" onSubmit={handleSubmit}>
-      <h5 className="mb-4 text-danger">
-        <span className="badge bg-danger me-2">1</span> Property Details
-      </h5>
+    <form onSubmit={handleSubmit} style={{ maxWidth: 600, margin: "auto" }}>
+      <input
+        type="text"
+        placeholder="Name"
+        value={formData.type}
+        onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+        required
+      />
 
-      <Form.Group className="mb-3">
-        <Form.Label>Apartment Type*</Form.Label>
-        <Form.Select name="apartmentType" onChange={handleChange} required>
-          <option value="">Select</option>
-          <option value="Flat">Flat</option>
-          <option value="Villa">Villa</option>
-          <option value="Independent House">Independent House</option>
-        </Form.Select>
-      </Form.Group>
+      <input
+        type="number"
+        placeholder="BHK"
+        value={formData.bhk}
+        onChange={(e) => setFormData({ ...formData, bhk: e.target.value })}
+        required
+      />
 
-      <Form.Group className="mb-3">
-        <Form.Label>BHK Type*</Form.Label>
-        <Form.Select name="bhkType" onChange={handleChange} required>
-          <option value="">Select</option>
-          <option value="1 BHK">1 BHK</option>
-          <option value="2 BHK">2 BHK</option>
-          <option value="3 BHK">3 BHK</option>
-          <option value="4+ BHK">4+ BHK</option>
-        </Form.Select>
-      </Form.Group>
+      <input
+        type="number"
+        placeholder="Bathrooms"
+        value={formData.bathrooms}
+        onChange={(e) => setFormData({ ...formData, bathrooms: e.target.value })}
+        required
+      />
 
-      <Row className="mb-3">
-        <Col>
-          <Form.Label>Floor*</Form.Label>
-          <Form.Select name="floor" onChange={handleChange} required>
-            <option value="">Select</option>
-            {[...Array(30)].map((_, i) => (
-              <option key={i} value={i + 1}>{i + 1}</option>
-            ))}
-          </Form.Select>
-        </Col>
-        <Col>
-          <Form.Label>Total Floor*</Form.Label>
-          <Form.Select name="totalFloor" onChange={handleChange} required>
-            <option value="">Select</option>
-            {[...Array(30)].map((_, i) => (
-              <option key={i} value={i + 1}>{i + 1}</option>
-            ))}
-          </Form.Select>
-        </Col>
-      </Row>
+      <select
+        value={formData.furnishing}
+        onChange={(e) => setFormData({ ...formData, furnishing: e.target.value })}
+        required
+      >
+        <option value="">Select Furnishing</option>
+        <option value="Furnished">Furnished</option>
+        <option value="Semi-Furnished">Semi-Furnished</option>
+        <option value="Unfurnished">Unfurnished</option>
+      </select>
 
-      <Form.Group className="mb-3">
-        <Form.Label>Property Age*</Form.Label>
-        <Form.Select name="propertyAge" onChange={handleChange} required>
-          <option value="">Select</option>
-          <option value="New">New</option>
-          <option value="0-1 Years">0-1 Years</option>
-          <option value="1-5 Years">1-5 Years</option>
-          <option value="5-10 Years">5-10 Years</option>
-          <option value="10+ Years">10+ Years</option>
-        </Form.Select>
-      </Form.Group>
+      <select
+        value={formData.projectStatus}
+        onChange={(e) => setFormData({ ...formData, projectStatus: e.target.value })}
+        required
+      >
+        <option value="">Select Project Status</option>
+        <option value="Ready to Move">Ready to Move</option>
+        <option value="Under Construction">Under Construction</option>
+      </select>
 
-      <Form.Group className="mb-3">
-        <Form.Label>Facing</Form.Label>
-        <Form.Select name="facing" onChange={handleChange}>
-          <option value="">Select</option>
-          <option value="East">East</option>
-          <option value="West">West</option>
-          <option value="North">North</option>
-          <option value="South">South</option>
-        </Form.Select>
-      </Form.Group>
+      <select
+      value={formData.listedBy}
+      onChange={(e) => setFormData({ ...formData, listedBy: e.target.value })}
+      required
+      >
+        <option value="">Listed By</option>
+        <option value="Owner">Owner</option>
+        <option value="Builder">Builder</option>
+        <option value="Dealer">Dealer</option>
+      </select>
 
-      <Form.Group className="mb-3">
-        <Form.Label>Built Up Area*</Form.Label>
-        <Form.Control
-          type="text"
-          name="builtUpArea"
-          placeholder="Built Up Area in sq ft"
-          onChange={handleChange}
-          required
-        />
-      </Form.Group>
 
-      <Button type="submit" className="w-100 btn btn-success">
-        Save And Continue
-      </Button>
-    </Form>
+      <input
+        type="number"
+        placeholder="Super Built-up Area (sq.ft)"
+        value={formData.superBuiltupArea}
+        onChange={(e) => setFormData({ ...formData, superBuiltupArea: e.target.value })}
+        required
+      />
+
+      <input
+        type="number"
+        placeholder="Carpet Area (sq.ft)"
+        value={formData.carpetArea}
+        onChange={(e) => setFormData({ ...formData, carpetArea: e.target.value })}
+        required
+      />
+
+      <input
+        type="number"
+        placeholder="Maintenance (per month)"
+        value={formData.maintenance}
+        onChange={(e) => setFormData({ ...formData, maintenance: e.target.value })}
+      />
+
+      <input
+        type="number"
+        placeholder="Total Floors"
+        value={formData.totalFloors}
+        onChange={(e) => setFormData({ ...formData, totalFloors: e.target.value })}
+      />
+
+      <input
+        type="number"
+        placeholder="Floor No"
+        value={formData.floorNo}
+        onChange={(e) => setFormData({ ...formData, floorNo: e.target.value })}
+      />
+
+      <select
+        value={formData.carParking}
+        onChange={(e) => setFormData({ ...formData, carParking: e.target.value })}
+      >
+        <option value="">Car Parking</option>
+        <option value="Available">Available</option>
+        <option value="Not Available">Not Available</option>
+      </select>
+
+      <select
+        value={formData.facing}
+        onChange={(e) => setFormData({ ...formData, facing: e.target.value })}
+      >
+        <option value="">Facing</option>
+        <option value="East">East</option>
+        <option value="West">West</option>
+        <option value="North">North</option>
+        <option value="South">South</option>
+      </select>
+
+      <input
+        type="text"
+        placeholder="Project Name"
+        value={formData.projectName}
+        onChange={(e) => setFormData({ ...formData, projectName: e.target.value })}
+      />
+
+      <input
+        type="text"
+        placeholder="Ad Title"
+        value={formData.adTitle}
+        onChange={(e) => setFormData({ ...formData, adTitle: e.target.value })}
+        required
+      />
+
+      <textarea
+        placeholder="Description"
+        value={formData.description}
+        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+        required
+      />
+
+      <input
+        type="number"
+        placeholder="Price"
+        value={formData.price}
+        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+        required
+      />
+
+      <input
+        type="file"
+        multiple
+        onChange={(e) => setFormData({ ...formData, photos: Array.from(e.target.files) })}
+      />
+
+      <input
+        type="text"
+        placeholder="State"
+        value={formData.state}
+        onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+        required
+      />
+
+      <input
+        type="tel"
+        placeholder="Mobile"
+        value={formData.mobile}
+        onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+        required
+      />
+
+
+      <input
+      type="email"
+      id="email"
+      name="email"
+      value={formData.email || ''}
+      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+      placeholder="Enter your email"
+      />
+
+      <button type="submit" style={{ marginTop: 20 }}>
+        Submit
+      </button>
+    </form>
   );
 };
 
-export default ForSaleForm;
+export default ForSaleHousesForm;

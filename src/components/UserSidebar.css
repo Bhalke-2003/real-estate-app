@@ -1,0 +1,35 @@
+.user-sidebar {
+  width: 220px;
+  background: #273c75;
+  color: white;
+  height: 100vh;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.user-sidebar h4 {
+  color: #f5f6fa;
+  margin-bottom: 20px;
+}
+
+.user-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.user-sidebar li {
+  margin: 15px 0;
+}
+
+.user-sidebar a {
+  color: #dcdde1;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.user-sidebar a:hover {
+  color: #00a8ff;
+  text-decoration: underline;
+}

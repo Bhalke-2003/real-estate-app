@@ -11,7 +11,8 @@ import SearchResults from './pages/SearchResults';
 import PostProperty from './pages/PostProperty';
 import ServicesPage from "./pages/ServicesPage"
 import RentalList from './pages/RentalList';
-import AdminPanel from './AdminPannel';
+import AdminPannel from './AdminPannel';
+import UserPanel from './Userpanel';
 
 import ForSaleForm from './pages/ForSale';
 import ForSaleHousesForm from './pages/ForSaleHousesForm';
@@ -44,8 +45,9 @@ function App() {
         <Route path="/post/shop-rent" element={<ShopOfficeRentForm />} />
         <Route path="/post/shop-sale" element={<ShopOfficeSaleForm />} />
         <Route path="/post/builder" element={<BuilderInfo />} />
+        <Route path="/admin/*" element={<AdminPannel />} />
+        <Route path="/user/*" element={<UserPanel />} />
         
-        <Route path="/admin/*" element={<AdminPanel />} />
       </Routes>
 
       <Footer />

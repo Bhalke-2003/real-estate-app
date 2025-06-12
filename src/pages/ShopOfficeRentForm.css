@@ -1,0 +1,72 @@
+.container {
+  max-width: 720px;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+}
+
+h2, h5 {
+  font-weight: 700;
+}
+
+form label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: inline-block;
+}
+
+input.form-control,
+textarea.form-control,
+select.form-select {
+  border-radius: 8px;
+  box-shadow: none;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s;
+}
+
+input.form-control:focus,
+textarea.form-control:focus,
+select.form-select:focus {
+  border-color: #0d6efd;
+  outline: none;
+  box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
+}
+
+.input-group .input-group-text {
+  border-radius: 8px 0 0 8px;
+}
+
+button[type="submit"] {
+  padding: 10px 0;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+input[type="file"]::file-selector-button {
+  background-color: #0d6efd;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-color: #0b5ed7;
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  button[type="submit"] {
+    font-size: 15px;
+  }
+}

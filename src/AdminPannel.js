@@ -3,8 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import AdminSidebar from './components/AdminSidebar';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import BuilderInfo from './pages/Admin/BuilderInfo';
-import Sellers from './pages/Admin/RentalList';
-import Rentals from './pages/Admin/SellerList';
+import Sellers from './pages/Admin/SellerList';
+import Rentals from './pages/Admin/RentalList';
 import './AdminPannel.css';
 
 const AdminPanel = () => {
