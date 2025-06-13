@@ -105,7 +105,6 @@ const LoginModal = ({ onClose }) => {
               isInvalid={!!errors.role}
             >
               <option value="">Select Role</option>
-              <option value="USER">USER</option>
               <option value="ADMIN">ADMIN</option>
             </Form.Select>
             <Form.Control.Feedback type="invalid">{errors.role}</Form.Control.Feedback>

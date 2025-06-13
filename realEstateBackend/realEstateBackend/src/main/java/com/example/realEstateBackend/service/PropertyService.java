@@ -2,6 +2,7 @@ package com.example.realEstateBackend.service;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -23,7 +24,7 @@ public class PropertyService {
     @Autowired
     private PropertyRepository propertyRepository;
 
-    public Property saveProperty(String type, Integer bhk, Integer bathrooms,
+    public Property saveProperty(String userId, String type, Integer bhk, Integer bathrooms,
                                  String furnishing, String projectStatus, String listedBy,
                                  Double superBuiltupArea, Double carpetArea, Double maintenance,
                                  Integer totalFloors, Integer floorNo, String carParking,
@@ -46,6 +47,7 @@ public class PropertyService {
         }
 
         Property property = new Property();
+        property.setUserId(userId);
         property.setType(type);
         property.setBhk(bhk);
         property.setBathrooms(bathrooms);
@@ -73,4 +75,9 @@ public class PropertyService {
 
         return propertyRepository.save(property);
     }
+
+    public List<Property> getPropertiesByUserId(String userId) {
+        return propertyRepository.findByUserId(userId);
+    }
+
 }

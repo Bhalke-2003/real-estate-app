@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-
-const ShopOfficeRentForm = () => {
+const ShopOfficeSaleForm = () => {
   const [formData, setFormData] = useState({
     furnishing: '',
+    projectStatus: '',
     listedBy: '',
-    superBuiltupArea: '',
+    superBuiltUpArea: '',
     carpetArea: '',
     maintenance: '',
     carParking: '',
@@ -14,75 +15,126 @@ const ShopOfficeRentForm = () => {
     adTitle: '',
     description: '',
     price: '',
-    photos: [],
     state: '',
-    mobile: '',
+    name: '',
+    phone: '',
+    photos: [],
   });
 
+  const [userId, setUserId] = useState('');
+
+  useEffect(() => {
+    // Replace this with your actual auth logic or user retrieval
+    const storedUserId = localStorage.getItem('userId');
+    const storedName = localStorage.getItem('userName');
+
+    if (storedUserId) setUserId(storedUserId);
+    if (storedName) setFormData((prev) => ({ ...prev, name: storedName }));
+  }, []);
+
   const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'file' ? files : value,
-    }));
+    const { name, value, files } = e.target;
+    if (name === 'photos') {
+      setFormData({ ...formData, photos: files });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
+
+    if (!userId) {
+      alert('User not logged in. Please login to continue.');
+      return;
+    }
+
+    const submissionData = new FormData();
+
+    // Append form fields
+    for (let key in formData) {
+      if (key === 'photos') {
+        for (let i = 0; i < formData.photos.length; i++) {
+          submissionData.append('photos', formData.photos[i]);
+        }
+      } else {
+        submissionData.append(key, formData[key]);
+      }
+    }
+
+    // Append userId
+    submissionData.append('userId', userId);
+
+    try {
+      const res = await axios.post('http://localhost:8080/api/properties/add', submissionData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+
+      if (res.status === 200 || res.status === 201) {
+        alert('Property posted successfully!');
+        console.log('Response:', res.data);
+      }
+    } catch (err) {
+      console.error('Submission failed:', err);
+      alert('Failed to post property. Please try again.');
+    }
   };
 
   return (
-    <div className="container my-5">
-      <h2 className="text-center text-primary fw-bold mb-4">Post your Ad</h2>
-      <p className='text-center'><strong>Selected category:</strong> Properties / <span className="text-success">For Rent: Shops & Offices</span></p>
+    <div className="shop-sale-form container">
+      <h2 className="text-center mb-4">Post your Ad</h2>
 
       <form onSubmit={handleSubmit}>
-        <h5 className="mt-4">Include some details</h5>
+        <h5>Include some details</h5>
 
-        {/* Furnishing */}
-        <div className="mb-3">
-          <label className="form-label">Furnishing</label>
-          <select className="form-select" name="furnishing" onChange={handleChange} required>
-            <option value="">Select</option>
-            <option>Furnished</option>
-            <option>Semi-Furnished</option>
-            <option>Unfurnished</option>
-          </select>
-        </div>
+        <h5 className="mt-4">Review your details</h5>
+        <label>Name</label>
+        <input type="text" maxLength={70} className="form-control" name="adTitle" onChange={handleChange} required  />
+        <label>Furnishing</label>
+        <select className="form-select" name="furnishing" onChange={handleChange} required>
+          <option value="">Select</option>
+          <option>Furnished</option>
+          <option>Semi-Furnished</option>
+          <option>Unfurnished</option>
+        </select>
 
-        {/* Listed By */}
-        <div className="mb-3">
-          <label className="form-label">Listed by</label>
-          <select className="form-select" name="listedBy" onChange={handleChange} required>
-            <option value="">Select</option>
-            <option>Builder</option>
-            <option>Dealer</option>
-            <option>Owner</option>
-          </select>
-        </div>
+        <label>Project Status</label>
+        <select className="form-select" name="projectStatus" onChange={handleChange} required>
+          <option value="">Select</option>
+          <option>New Launch</option>
+          <option>Ready to Move</option>
+          <option>Under Construction</option>
+        </select>
 
-        {/* Area Fields */}
-        <div className="row mb-3">
+        <label>Listed By</label>
+        <select className="form-select" name="listedBy" onChange={handleChange} required>
+          <option value="">Select</option>
+          <option>Builder</option>
+          <option>Dealer</option>
+          <option>Owner</option>
+        </select>
+
+        <div className="row">
           <div className="col-md-6">
-            <input type="number" name="superBuiltupArea" onChange={handleChange} className="form-control" placeholder="Super Builtup area sqft *" required />
+            <label>Super Builtup Area (sqft) *</label>
+            <input type="number" className="form-control" name="superBuiltUpArea" onChange={handleChange} required />
           </div>
           <div className="col-md-6">
-            <input type="number" name="carpetArea" onChange={handleChange} className="form-control" placeholder="Carpet Area sqft *" required />
+            <label>Carpet Area (sqft) *</label>
+            <input type="number" className="form-control" name="carpetArea" onChange={handleChange} required />
           </div>
         </div>
 
-        {/* Maintenance */}
-        <div className="mb-3">
-          <input type="text" name="maintenance" onChange={handleChange} className="form-control" placeholder="Maintenance (Monthly)" />
-        </div>
+        <label>Maintenance (Monthly)</label>
+        <input type="number" className="form-control" name="maintenance" onChange={handleChange} />
 
-        {/* Car Parking & Washrooms */}
-        <div className="row mb-3">
+        <div className="row">
           <div className="col-md-6">
             <label>Car Parking</label>
-            <select className="form-select" name="carParking" onChange={handleChange} required>
-              <option value="">Select</option>
+            <select className="form-select" name="carParking" onChange={handleChange}>
               <option>0</option>
               <option>1</option>
               <option>2</option>
@@ -92,57 +144,42 @@ const ShopOfficeRentForm = () => {
           </div>
           <div className="col-md-6">
             <label>Washrooms</label>
-            <input type="number" name="washrooms" onChange={handleChange} className="form-control" min="0" />
+            <input type="number" className="form-control" name="washrooms" onChange={handleChange} />
           </div>
         </div>
 
-        {/* Project Name */}
-        <div className="mb-3">
-          <input type="text" name="projectName" onChange={handleChange} className="form-control" placeholder="Project Name" maxLength={70} />
+        <label>Project Name</label>
+        <input type="text" maxLength={70} className="form-control" name="projectName" onChange={handleChange} />
+
+        <label>Ad Title *</label>
+        <input type="text" maxLength={70} className="form-control" name="adTitle" onChange={handleChange} required />
+
+        <label>Description *</label>
+        <textarea className="form-control" rows="5" maxLength={4096} name="description" onChange={handleChange} required />
+
+        <label>Price *</label>
+        <div className="input-group mb-3">
+          <span className="input-group-text">₹</span>
+          <input type="number" className="form-control" name="price" onChange={handleChange} required />
         </div>
 
-        {/* Ad Title */}
-        <div className="mb-3">
-          <input type="text" name="adTitle" onChange={handleChange} className="form-control" placeholder="Ad Title *" maxLength={70} required />
-        </div>
+        <label>Upload up to 20 photos</label>
+        <input type="file" className="form-control" name="photos" accept="image/*" onChange={handleChange} multiple required />
 
-        {/* Description */}
-        <div className="mb-3">
-          <textarea name="description" onChange={handleChange} className="form-control" rows="4" placeholder="Description *" maxLength={4096} required />
-        </div>
-
-        {/* Price */}
-        <div className="mb-3">
-          <label>Price *</label>
-          <div className="input-group">
-            <span className="input-group-text">₹</span>
-            <input type="number" name="price" onChange={handleChange} className="form-control" required />
-          </div>
-        </div>
-
-        {/* Upload Photos */}
-        <div className="mb-3">
-          <label className="form-label">Upload up to 20 photos</label>
-          <input type="file" name="photos" onChange={handleChange} className="form-control" multiple accept="image/*" required />
-        </div>
-
-        {/* Location */}
         <h5 className="mt-4">Confirm your location</h5>
-        <div className="mb-3">
-          <input type="text" name="state" onChange={handleChange} className="form-control" placeholder="State *" required />
+        <label>State *</label>
+        <input type="text" className="form-control" name="state" onChange={handleChange} required />
+
+        <label>Mobile Phone Number *</label>
+        <div className="input-group">
+          <span className="input-group-text">+91</span>
+          <input type="tel" className="form-control" name="phone" onChange={handleChange} required />
         </div>
 
-        {/* Mobile Verification */}
-        <h5 className="mt-4">Let's verify your account</h5>
-        <div className="mb-3">
-          <label className="form-label">Mobile Phone Number *</label>
-          <input type="tel" name="mobile" onChange={handleChange} className="form-control" placeholder="+91" required />
-        </div>
-
-        <button type="submit" className="btn btn-primary w-100 mt-3">POST NOW</button>
+        <button type="submit" className="btn btn-success mt-4">POST NOW</button>
       </form>
     </div>
   );
 };
 
-export default ShopOfficeRentForm;
+export default ShopOfficeSaleForm;

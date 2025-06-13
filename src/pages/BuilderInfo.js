@@ -1,10 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import builders from '../data/builderData';
 import './Builder.css';
 
 const BuilderInfo = () => {
   const [showInquiry, setShowInquiry] = useState(false);
   const [inquiryBuilder, setInquiryBuilder] = useState('');
+  const [userId, setUserId] = useState('');
+
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    contact: '',
+    location: '',
+  });
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUserId) setUserId(storedUserId);
+  }, []);
 
   const handleInquiryClick = (builderName) => {
     setInquiryBuilder(builderName);
@@ -14,6 +28,49 @@ const BuilderInfo = () => {
   const closeInquiry = () => {
     setShowInquiry(false);
     setInquiryBuilder('');
+    setFormData({
+      name: '',
+      email: '',
+      contact: '',
+      location: '',
+    });
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!userId) {
+      alert('Please log in to send an inquiry.');
+      return;
+    }
+
+    const inquiryPayload = {
+      userId,
+      builderName: inquiryBuilder,
+      name: formData.name,
+      email: formData.email,
+      phone: formData.contact,
+      state: formData.location,
+      adTitle: `Inquiry for ${inquiryBuilder}`,
+      description: `Inquiry submitted for builder: ${inquiryBuilder}`,
+      listedBy: 'User',
+    };
+
+    try {
+      const response = await axios.post('/api/properties/add', inquiryPayload);
+      if (response.status === 200 || response.status === 201) {
+        alert('Inquiry submitted successfully!');
+        closeInquiry();
+      }
+    } catch (error) {
+      console.error('Error submitting inquiry:', error);
+      alert('Failed to submit inquiry. Please try again.');
+    }
   };
 
   return (
@@ -62,20 +119,54 @@ const BuilderInfo = () => {
             </button>
 
             <h5 className="mb-3 text-center">Inquiry for: {inquiryBuilder}</h5>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <input type="text" className="form-control" placeholder="Name" required />
+                <input
+                  type="text"
+                  name="name"
+                  className="form-control"
+                  placeholder="Name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <div className="mb-3">
-                <input type="email" className="form-control" placeholder="Email" required />
+                <input
+                  type="email"
+                  name="email"
+                  className="form-control"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <div className="mb-3">
-                <input type="tel" className="form-control" placeholder="Contact" required />
+                <input
+                  type="tel"
+                  name="contact"
+                  className="form-control"
+                  placeholder="Contact"
+                  value={formData.contact}
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <div className="mb-3">
-                <input type="text" className="form-control" placeholder="Location" required />
+                <input
+                  type="text"
+                  name="location"
+                  className="form-control"
+                  placeholder="Location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  required
+                />
               </div>
-              <button type="submit" className="btn btn-success w-100">Submit</button>
+              <button type="submit" className="btn btn-success w-100">
+                Submit
+              </button>
             </form>
           </div>
         </div>

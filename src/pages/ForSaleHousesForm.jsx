@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./ForSale.css";
 
-
 const ForSaleHousesForm = () => {
   const [formData, setFormData] = useState({
-    name:"",
+    name: "",
     type: "",
     bhk: "",
     bathrooms: "",
@@ -32,6 +31,12 @@ const ForSaleHousesForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("Please log in first.");
+      return;
+    }
+
     const data = new FormData();
 
     for (const key in formData) {
@@ -44,7 +49,10 @@ const ForSaleHousesForm = () => {
       data.append("photos", file);
     });
 
-    // Save listing to localStorage
+    // ✅ Add userId to form data
+    data.append("userId", userId);
+
+    // Save listing to localStorage (optional)
     const listing = {
       type: formData.type,
       price: formData.price,
@@ -66,7 +74,9 @@ const ForSaleHousesForm = () => {
       alert("Failed to submit property");
     }
 
+    // Reset form
     setFormData({
+      name: "",
       type: "",
       bhk: "",
       bathrooms: "",
@@ -96,6 +106,14 @@ const ForSaleHousesForm = () => {
       <input
         type="text"
         placeholder="Name"
+        value={formData.name}
+        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+        required
+      />
+
+      <input
+        type="text"
+        placeholder="Property Type"
         value={formData.type}
         onChange={(e) => setFormData({ ...formData, type: e.target.value })}
         required
@@ -136,19 +154,19 @@ const ForSaleHousesForm = () => {
         <option value="">Select Project Status</option>
         <option value="Ready to Move">Ready to Move</option>
         <option value="Under Construction">Under Construction</option>
+        <option value="New Launch">New Launch</option>
       </select>
 
       <select
-      value={formData.listedBy}
-      onChange={(e) => setFormData({ ...formData, listedBy: e.target.value })}
-      required
+        value={formData.listedBy}
+        onChange={(e) => setFormData({ ...formData, listedBy: e.target.value })}
+        required
       >
         <option value="">Listed By</option>
         <option value="Owner">Owner</option>
         <option value="Builder">Builder</option>
         <option value="Dealer">Dealer</option>
       </select>
-
 
       <input
         type="number"
@@ -259,14 +277,12 @@ const ForSaleHousesForm = () => {
         required
       />
 
-
       <input
-      type="email"
-      id="email"
-      name="email"
-      value={formData.email || ''}
-      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-      placeholder="Enter your email"
+        type="email"
+        placeholder="Email"
+        value={formData.email}
+        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        required
       />
 
       <button type="submit" style={{ marginTop: 20 }}>

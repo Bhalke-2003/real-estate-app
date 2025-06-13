@@ -3,7 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import UserSidebar from './components/UserSidebar';
 import UserDashboard from './pages/User/UserDashboard';
 import UserProfile from './pages/User/UserProfile';
-import UserListings from './pages/User/UserListing';
+import RentalList from './pages/User/RentalList';
+import SellerList from './pages/User/SellerList';
 import UserSettings from './pages/User/UserSettings';
 import './UserPanel.css';
 
@@ -15,7 +16,8 @@ const UserPanel = () => {
         <Routes>
           <Route path="dashboard" element={<UserDashboard />} />
           <Route path="profile" element={<UserProfile />} />
-          <Route path="listings" element={<UserListings />} />
+          <Route path="listings" element={<RentalList />} />
+          <Route path="buy" element={<SellerList />} />
           <Route path="settings" element={<UserSettings />} />
         </Routes>
       </div>

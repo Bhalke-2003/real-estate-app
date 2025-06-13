@@ -21,6 +21,7 @@ public class Property {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String userId;
     private String type;
     private Integer bhk;
     private Integer bathrooms;
